@@ -11,7 +11,9 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text("Home Works"),),
+      body: Center(
+        child: Text("Home Works"),
+      ),
     );
   }
 }
