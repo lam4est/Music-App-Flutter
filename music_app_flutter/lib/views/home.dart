@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_app_flutter/widgets/album_cards.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -87,6 +88,65 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ],
                   ),
+                ),
+                SizedBox(height: 32),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        "Good Evening",
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        children: [
+                          RowAlbumCard(
+                              label: "Nếu ngày ấy",
+                              image: AssetImage("assets/NeuNgayAy.jpg")),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          RowAlbumCard(
+                              label: "Tại vì sao",
+                              image: AssetImage("assets/TaiViSao.jpg")),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        children: [
+                          RowAlbumCard(
+                              label: "Đưa em về nhà",
+                              image: AssetImage("assets/DuaEmVeNha.jpg")),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          RowAlbumCard(
+                              label: "Chìm sâu",
+                              image: AssetImage("assets/ChimSau.jpg")),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        children: [
+                          RowAlbumCard(
+                              label: "Dont Let Me Down",
+                              image: AssetImage("assets/DontLetMeDown.jpg")),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          RowAlbumCard(
+                              label: "Đông kiếm em",
+                              image: AssetImage("assets/DongKiemEm.jpg")),
+                        ],
+                      )
+                    ],
+                  ),
                 )
               ],
             )),
@@ -97,11 +157,10 @@ class _HomeViewState extends State<HomeView> {
   }
 }
 
-class AlbumCard extends StatelessWidget {
-  final ImageProvider image;
+class RowAlbumCard extends StatelessWidget {
+  final AssetImage image;
   final String label;
-
-  const AlbumCard({
+  const RowAlbumCard({
     super.key,
     required this.image,
     required this.label,
@@ -109,18 +168,25 @@ class AlbumCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Image(
-          image: image,
-          width: 120,
-          height: 120,
-          fit: BoxFit.cover,
+    return Expanded(
+      flex: 1,
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white10, borderRadius: BorderRadius.circular(4)),
+        clipBehavior: Clip.antiAlias,
+        child: Row(
+          children: [
+            Image(
+              image: image,
+              height: 48,
+              width: 48,
+              fit: BoxFit.cover,
+            ),
+            SizedBox(width: 8),
+            Text(label)
+          ],
         ),
-        SizedBox(height: 10),
-        Text(label),
-      ],
+      ),
     );
   }
 }
