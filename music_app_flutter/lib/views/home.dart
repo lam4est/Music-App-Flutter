@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_app_flutter/views/album_view.dart';
 import 'package:music_app_flutter/widgets/album_cards.dart';
 import 'package:music_app_flutter/widgets/song_card.dart';
 
@@ -69,27 +70,67 @@ class _HomeViewState extends State<HomeView> {
                         AlbumCard(
                           image: AssetImage("assets/LoiChoi.jpg"),
                           label: 'Loi Choi',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AlbumView(),
+                              ),
+                            );
+                          },
                         ),
                         SizedBox(width: 16),
                         AlbumCard(
                           image: AssetImage("assets/99%.jpg"),
                           label: '99%',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AlbumView(),
+                              ),
+                            );
+                          },
                         ),
                         SizedBox(width: 16),
                         AlbumCard(
                           image: AssetImage("assets/DanhDoi.jpg"),
                           label: 'Đánh đổi',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AlbumView(),
+                              ),
+                            );
+                          },
                         ),
                         SizedBox(width: 16),
                         AlbumCard(
                           image: AssetImage(
                               "assets/vaicaunoicokhiennguoithaydoi.jpg"),
                           label: 'vaicaunoicokhiennguoithaydoi',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AlbumView(),
+                              ),
+                            );
+                          },
                         ),
                         SizedBox(width: 16),
                         AlbumCard(
                           image: AssetImage("assets/ThePlayah.jpg"),
                           label: 'The Playah',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AlbumView(),
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
