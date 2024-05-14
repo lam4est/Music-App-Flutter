@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_app_flutter/views/album_view.dart';
 import 'package:music_app_flutter/widgets/album_cards.dart';
+import 'package:music_app_flutter/widgets/row_song_card.dart';
 import 'package:music_app_flutter/widgets/song_card.dart';
 
 class HomeView extends StatefulWidget {
@@ -75,7 +76,8 @@ class _HomeViewState extends State<HomeView> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => AlbumView(
-                                  image: AssetImage("assets/Photograph.jpg"),
+                                  image: AssetImage(
+                                      "assets/WeDontTalkAnymore.jpg"),
                                 ),
                               ),
                             );
@@ -159,14 +161,38 @@ class _HomeViewState extends State<HomeView> {
                         Row(
                           children: [
                             RowAlbumCard(
-                                label: "Nếu ngày ấy",
-                                image: AssetImage("assets/NeuNgayAy.jpg")),
+                              label: "Nếu ngày ấy",
+                              image: AssetImage("assets/NeuNgayAy.jpg"),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                             SizedBox(
                               width: 16,
                             ),
                             RowAlbumCard(
-                                label: "Tại vì sao",
-                                image: AssetImage("assets/TaiViSao.jpg")),
+                              label: "Tại vì sao",
+                              image: AssetImage("assets/TaiViSao.jpg"),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ],
                         ),
                         SizedBox(
@@ -175,14 +201,38 @@ class _HomeViewState extends State<HomeView> {
                         Row(
                           children: [
                             RowAlbumCard(
-                                label: "Đưa em về nhà",
-                                image: AssetImage("assets/DuaEmVeNha.jpg")),
+                              label: "Đưa em về nhà",
+                              image: AssetImage("assets/DuaEmVeNha.jpg"),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                             SizedBox(
                               width: 16,
                             ),
                             RowAlbumCard(
-                                label: "Chìm sâu",
-                                image: AssetImage("assets/ChimSau.jpg")),
+                              label: "Chìm sâu",
+                              image: AssetImage("assets/ChimSau.jpg"),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ],
                         ),
                         SizedBox(
@@ -191,14 +241,38 @@ class _HomeViewState extends State<HomeView> {
                         Row(
                           children: [
                             RowAlbumCard(
-                                label: "Dont Let Me Down",
-                                image: AssetImage("assets/DontLetMeDown.jpg")),
+                              label: "Dont Let Me Down",
+                              image: AssetImage("assets/DontLetMeDown.jpg"),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                             SizedBox(
                               width: 16,
                             ),
                             RowAlbumCard(
-                                label: "Đông kiếm em",
-                                image: AssetImage("assets/DongKiemEm.jpg")),
+                              label: "Đông kiếm em",
+                              image: AssetImage("assets/DongKiemEm.jpg"),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ],
                         )
                       ],
@@ -327,40 +401,6 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class RowAlbumCard extends StatelessWidget {
-  final AssetImage image;
-  final String label;
-  const RowAlbumCard({
-    super.key,
-    required this.image,
-    required this.label,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white10, borderRadius: BorderRadius.circular(4)),
-        clipBehavior: Clip.antiAlias,
-        child: Row(
-          children: [
-            Image(
-              image: image,
-              height: 48,
-              width: 48,
-              fit: BoxFit.cover,
-            ),
-            SizedBox(width: 8),
-            Text(label)
-          ],
-        ),
       ),
     );
   }
