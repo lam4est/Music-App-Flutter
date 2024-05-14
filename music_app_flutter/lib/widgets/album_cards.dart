@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:music_app_flutter/views/album_view.dart';
-// import 'package:music_app_flutter/views/album_view.dart';
 
 class AlbumCard extends StatelessWidget {
   final ImageProvider image;
   final String label;
   final Function onTap;
-
+  final double size;
   const AlbumCard({
-    super.key,
+    Key? key,
     required this.image,
     required this.label,
     required this.onTap,
-  });
+    this.size = 120,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +22,8 @@ class AlbumCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => AlbumView(
-                // image: image,
-                ),
+              image: image,
+            ),
           ),
         );
       },
@@ -32,8 +32,8 @@ class AlbumCard extends StatelessWidget {
         children: [
           Image(
             image: image,
-            width: 120,
-            height: 120,
+            width: size,
+            height: size,
             fit: BoxFit.cover,
           ),
           SizedBox(height: 10),

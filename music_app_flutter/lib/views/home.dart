@@ -74,7 +74,9 @@ class _HomeViewState extends State<HomeView> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AlbumView(),
+                                builder: (context) => AlbumView(
+                                  image: AssetImage("assets/Photograph.jpg"),
+                                ),
                               ),
                             );
                           },
@@ -87,7 +89,9 @@ class _HomeViewState extends State<HomeView> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AlbumView(),
+                                builder: (context) => AlbumView(
+                                  image: AssetImage("assets/Photograph.jpg"),
+                                ),
                               ),
                             );
                           },
@@ -100,7 +104,9 @@ class _HomeViewState extends State<HomeView> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AlbumView(),
+                                builder: (context) => AlbumView(
+                                  image: AssetImage("assets/Photograph.jpg"),
+                                ),
                               ),
                             );
                           },
@@ -114,7 +120,9 @@ class _HomeViewState extends State<HomeView> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AlbumView(),
+                                builder: (context) => AlbumView(
+                                  image: AssetImage("assets/Photograph.jpg"),
+                                ),
                               ),
                             );
                           },
@@ -127,7 +135,9 @@ class _HomeViewState extends State<HomeView> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AlbumView(),
+                                builder: (context) => AlbumView(
+                                  image: AssetImage("assets/Photograph.jpg"),
+                                ),
                               ),
                             );
                           },
