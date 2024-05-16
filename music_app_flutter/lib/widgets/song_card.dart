@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:music_app_flutter/views/album_view.dart';
 
 class SongCard extends StatelessWidget {
   final AssetImage image;
+  final String label;
+  final Function onTap;
 
-  const SongCard({super.key, required this.image});
+  const SongCard({
+    super.key,
+    required this.image,
+    required this.label,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 140,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AlbumView(
+              image: image,
+            ),
+          ),
+        );
+      },
+      // width: 140,
       child: Column(
         children: [
           Image(
@@ -17,7 +35,7 @@ class SongCard extends StatelessWidget {
             height: 140,
           ),
           Text(
-            "Charlie Puth, Selena Gomez,...",
+            label,
             style: Theme.of(context).textTheme.titleSmall,
             softWrap: true,
             overflow: TextOverflow.ellipsis,

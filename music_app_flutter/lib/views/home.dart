@@ -296,24 +296,72 @@ class _HomeViewState extends State<HomeView> {
                           children: [
                             SongCard(
                               image: AssetImage("assets/WeDontTalkAnymore.png"),
+                              label: 'Phia sau mot co gai',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             SizedBox(
                               width: 16,
                             ),
                             SongCard(
                               image: AssetImage("assets/Attention.png"),
+                              label: 'Phia sau mot co gai',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             SizedBox(
                               width: 16,
                             ),
                             SongCard(
                               image: AssetImage("assets/PhiaSauMotCoGai.png"),
+                              label: 'Phia sau mot co gai',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             SizedBox(
                               width: 16,
                             ),
                             SongCard(
                               image: AssetImage("assets/MatTroiCuaEm.jpg"),
+                              label: 'Phia sau mot co gai',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             SizedBox(
                               width: 16,
@@ -321,6 +369,18 @@ class _HomeViewState extends State<HomeView> {
                             SongCard(
                               image: AssetImage(
                                   "assets/SomethingJustLikeThis.png"),
+                              label: 'Phia sau mot co gai',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             SizedBox(
                               width: 16,
@@ -328,6 +388,18 @@ class _HomeViewState extends State<HomeView> {
                             SongCard(
                               image: AssetImage(
                                   "assets/YeuAnhDiMeAnhBanBanhMi.jpg"),
+                              label: 'Phia sau mot co gai',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -355,24 +427,72 @@ class _HomeViewState extends State<HomeView> {
                           children: [
                             SongCard(
                               image: AssetImage("assets/WeDontTalkAnymore.png"),
+                              label: 'Phia sau mot co gai',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             SizedBox(
                               width: 16,
                             ),
                             SongCard(
                               image: AssetImage("assets/Attention.png"),
+                              label: 'Phia sau mot co gai',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             SizedBox(
                               width: 16,
                             ),
                             SongCard(
                               image: AssetImage("assets/PhiaSauMotCoGai.png"),
+                              label: 'Phia sau mot co gai',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             SizedBox(
                               width: 16,
                             ),
                             SongCard(
                               image: AssetImage("assets/MatTroiCuaEm.jpg"),
+                              label: 'Phia sau mot co gai',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             SizedBox(
                               width: 16,
@@ -380,6 +500,18 @@ class _HomeViewState extends State<HomeView> {
                             SongCard(
                               image: AssetImage(
                                   "assets/SomethingJustLikeThis.png"),
+                              label: 'Phia sau mot co gai',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             SizedBox(
                               width: 16,
@@ -387,6 +519,18 @@ class _HomeViewState extends State<HomeView> {
                             SongCard(
                               image: AssetImage(
                                   "assets/YeuAnhDiMeAnhBanBanhMi.jpg"),
+                              label: 'Phia sau mot co gai',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image:
+                                          AssetImage("assets/Photograph.jpg"),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),
