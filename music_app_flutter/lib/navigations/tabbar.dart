@@ -17,11 +17,19 @@ class _TabbarState extends State<Tabbar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: Stack(
+        children: [
+          renderView(0, HomeView()),
+          renderView(1, SearchView()),
+          renderView(2, LibraryView()),
+          renderView(3, ProfileView()),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedTab,
         onTap: (index) {
           setState(() {
-            this._selectedTab = index;
+            _selectedTab = index;
           });
         },
         items: [
@@ -40,26 +48,6 @@ class _TabbarState extends State<Tabbar> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: "Profile",
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          renderView(
-            0,
-            HomeView(),
-          ),
-          renderView(
-            1,
-            SearchView(),
-          ),
-          renderView(
-            2,
-            LibraryView(),
-          ),
-          renderView(
-            3,
-            ProfileView(),
           ),
         ],
       ),
