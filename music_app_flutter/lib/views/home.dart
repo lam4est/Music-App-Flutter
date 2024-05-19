@@ -49,7 +49,7 @@ class _HomeViewState extends State<HomeView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Recently Played",
+                          "Recently Played",  
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         Row(

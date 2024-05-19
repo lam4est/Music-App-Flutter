@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_app_flutter/authentication/signup.dart';
+import 'package:music_app_flutter/logic/mysql.dart';
+import 'package:music_app_flutter/main.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,23 +23,21 @@ class _LoginScreenState extends State<LoginScreen> {
   //Here is our bool variable
   bool isLoginTrue = false;
 
-  // final db = DatabaseHelper();
-
   //Now we should call this function in login button
   login() async {
-    // var response = await db
-    //     .login(Users(usrName: username.text, usrPassword: password.text));
-    // if (response == true) {
-    //   //If login is correct, then goto notes
-    //   if (!mounted) return;
-    //   Navigator.pushReplacement(
-    //       context, MaterialPageRoute(builder: (context) => const Notes()));
-    // } else {
-    //   //If not, true the bool value to show error message
-    //   setState(() {
-    //     isLoginTrue = true;
-    //   });
-    // }
+    var db = Mysql();
+    var response = await db.login(username.text, password.text);
+    if (response == true) {
+      //If login is correct, then goto notes
+      if (!mounted) return;
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => MyApp()));
+    } else {
+      //If not, true the bool value to show error message
+      setState(() {
+        isLoginTrue = true;
+      });
+    }
   }
 
   //We have to create global key for our form
@@ -164,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   // We will disable this message in default, when user and pass is incorrect we will trigger this message to user
                   isLoginTrue
                       ? const Text(
-                          "Username or passowrd is incorrect",
+                          "Username or password is incorrect",
                           style: TextStyle(color: Colors.red),
                         )
                       : const SizedBox(),

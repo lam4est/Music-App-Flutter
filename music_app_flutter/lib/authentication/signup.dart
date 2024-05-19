@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_app_flutter/authentication/login.dart';
+import 'package:music_app_flutter/logic/mysql.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -12,6 +13,7 @@ class _SignUpState extends State<SignUp> {
   final username = TextEditingController();
   final password = TextEditingController();
   final confirmPassword = TextEditingController();
+  final email = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
@@ -77,7 +79,13 @@ class _SignUpState extends State<SignUp> {
                       controller: password,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "password is required";
+                          return "Password is required";
+                        } else if (value.length < 8) {
+                          return "Password must be at least 8 characters long";
+                        } else if (!RegExp(
+                                r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                            .hasMatch(value)) {
+                          return "Password must contain at least one special character";
                         }
                         return null;
                       },
@@ -138,6 +146,33 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
 
+                  // Email field
+                  Container(
+                    margin: EdgeInsets.all(8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.deepPurple.withOpacity(.2)),
+                    child: TextFormField(
+                      controller: email,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Email is required";
+                        } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                            .hasMatch(value)) {
+                          return "Invalid email address";
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.email),
+                        border: InputBorder.none,
+                        hintText: "Email",
+                      ),
+                    ),
+                  ),
+
                   const SizedBox(height: 10),
                   //Login button
                   Container(
@@ -148,23 +183,25 @@ class _SignUpState extends State<SignUp> {
                         color: Colors.deepPurple),
                     child: TextButton(
                         onPressed: () {
-                          // if (formKey.currentState!.validate()) {
-                          //   //Login method will be here
+                          if (formKey.currentState!.validate()) {
+                            // Login method will be here
 
-                          //   final db = DatabaseHelper();
-                          //   db
-                          //       .signup(Users(
-                          //           usrName: username.text,
-                          //           usrPassword: password.text))
-                          //       .whenComplete(() {
-                          //     //After success user creation go to login screen
-                          //     Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //             builder: (context) =>
-                          //                 const LoginScreen()));
-                          //   });
-                          // }
+                            final db = Mysql();
+                            db
+                                .signup(
+                              username.text,
+                              password.text,
+                              email.text,
+                            )
+                                .whenComplete(() {
+                              //After success user creation go to login screen
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginScreen()));
+                            });
+                          }
                         },
                         child: const Text(
                           "SIGN UP",
@@ -183,7 +220,7 @@ class _SignUpState extends State<SignUp> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const LoginScreen()));
+                                    builder: (context) => LoginScreen()));
                           },
                           child: const Text("Login"))
                     ],
