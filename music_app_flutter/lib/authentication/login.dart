@@ -131,11 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: TextButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            //Login method will be here
                             login();
-
-                            //Now we have a response from our sqlite method
-                            //We are going to create a user
                           }
                         },
                         child: const Text(
