@@ -6,7 +6,7 @@ class AlbumCard extends StatelessWidget {
   final String label;
   final Function onTap;
   final double size;
-  
+
   const AlbumCard({
     Key? key,
     required this.image,
@@ -39,7 +39,7 @@ class AlbumCard extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(label),
-        ],
+        ],  
       ),
     );
   }

@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:music_app_flutter/authentication/login.dart';
 import 'package:music_app_flutter/logic/mysql.dart';
 import 'package:music_app_flutter/navigations/tabbar.dart';
+import 'package:music_app_flutter/widgets/SongProvider.dart';
 import 'package:music_app_flutter/widgets/music_player.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -14,7 +16,12 @@ void main() {
     systemNavigationBarIconBrightness: Brightness.dark,
     statusBarIconBrightness: Brightness.dark,
   ));
-  runApp(MyAppLogin());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => SongProvider(),
+      child: MyAppLogin(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -48,10 +55,10 @@ class _MyAppState extends State<MyApp> {
         body: Stack(
           children: [
             Positioned.fill(
-              child: Tabbar(), // Nội dung chính của ứng dụng
+              child: Tabbar(), // Main content of the app
             ),
             Positioned(
-              bottom: 56.0, // Chiều cao của BottomNavigationBar
+              bottom: 56.0, // Height of the BottomNavigationBar
               left: 0,
               right: 0,
               child: MusicPlayerWidget(),
@@ -81,40 +88,3 @@ class MyAppLogin extends StatelessWidget {
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:music_app_flutter/authentication/login.dart';
-// import 'package:music_app_flutter/logic/mysql.dart';
-// import 'package:http/http.dart' as http;
-
-// void main() {
-//   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-//     statusBarColor: Colors.transparent,
-//     statusBarBrightness: Brightness.dark,
-//     systemNavigationBarColor: Colors.transparent,
-//     systemNavigationBarDividerColor: Colors.transparent,
-//     systemNavigationBarIconBrightness: Brightness.dark,
-//     statusBarIconBrightness: Brightness.dark,
-//   ));
-//   runApp(const MyApp());
-// }
-
-// class MyAppLogin extends StatelessWidget {
-//   const MyAppLogin({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     var db = new Mysql();
-
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-//         useMaterial3: true,
-//       ),
-//       home: LoginScreen(),
-//     );
-//   }
-// }

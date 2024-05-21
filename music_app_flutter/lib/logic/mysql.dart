@@ -76,21 +76,6 @@ class Mysql {
       await conn.close();
     }
   }
-
-  // Future<bool> search(String title) async {
-  //   var conn = await getConnection();
-  //   try {
-  //     var results = await conn.query(
-  //       'SELECT * FROM songs WHERE title LIKE ?',
-  //       [title],
-  //     );
-  //   } catch (e) {
-  //     print('Đăng ký thất bại: $e');
-  //     return false;
-  //   } finally {
-  //     await conn.close();
-  //   }
-  // }
 }
 
 void main() async {

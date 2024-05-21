@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:music_app_flutter/logic/models/songs.dart';
 import 'package:music_app_flutter/logic/mysql.dart';
-import 'package:music_app_flutter/widgets/row_song_card.dart';
+import 'package:music_app_flutter/views/library.dart';
+import 'package:music_app_flutter/widgets/SongProvider.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class SearchView extends StatefulWidget {
   const SearchView({super.key});
@@ -71,7 +76,7 @@ class _SearchViewState extends State<SearchView> {
                         itemCount: songs.length,
                         itemBuilder: (context, index) {
                           var song = songs[index];
-                          return SearchResult(song: song);
+                          return SearchResult(song: song, playlists: playlists);
                         },
                       ),
                     ),
@@ -85,27 +90,83 @@ class _SearchViewState extends State<SearchView> {
 
 class SearchResult extends StatelessWidget {
   final Map<String, dynamic> song;
+  final List<String> playlists;
 
-  const SearchResult({Key? key, required this.song}) : super(key: key);
+  const SearchResult({Key? key, required this.song, required this.playlists})
+      : super(key: key);
+
+  Future<void> _addSongToPlaylist(String playlistName) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> playlist = prefs.getStringList(playlistName) ?? [];
+
+    // Convert song to JSON string and add to playlist
+    var songJson = jsonEncode(song.map((key, value) {
+      if (value is DateTime) {
+        return MapEntry(key, value.toIso8601String());
+      }
+      return MapEntry(key, value);
+    }));
+    playlist.add(songJson);
+    await prefs.setStringList(playlistName, playlist);
+  }
+
+  void _choosePlaylist(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Choose Playlist'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (String playlistName in playlists)
+                ListTile(
+                  title: Text(playlistName),
+                  onTap: () {
+                    _addSongToPlaylist(playlistName);
+                    Navigator.of(context).pop();
+                  },
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: EdgeInsets.symmetric(vertical: 6),
       child: ListTile(
         leading: Image.asset(song['image'],
-            width: 50, height: 50, fit: BoxFit.cover),
+            width: 60, height: 60, fit: BoxFit.cover),
         title: Text(song['title']),
-        subtitle: Text('Views: ${song['views']}'),
-        trailing: IconButton(
-          icon: Icon(Icons.play_arrow),
-          onPressed: () {
-            // Hành động khi bấm vào nút
-            print('Playing ${song['title']}');
-          },
+        subtitle: Text('${song['artist']}'),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: Icon(Icons.favorite),
+              onPressed: () {
+                _choosePlaylist(context);
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.play_arrow),
+              onPressed: () {
+                final selectedSong = Song(
+                  title: song['title'],
+                  artist: song['artist'],
+                  image: song['image'],
+                  views: song['views'],
+                );
+                context.read<SongProvider>().playSong(selectedSong);
+              },
+            ),
+          ],
         ),
         onTap: () {
-          // Hành động khi bấm vào ListTile
           print('Tapped on ${song['title']}');
         },
       ),
