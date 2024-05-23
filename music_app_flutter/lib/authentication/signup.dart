@@ -22,7 +22,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //SingleChildScrollView to have an scrol in the screen
+      backgroundColor: Color.fromRGBO(34, 40, 49, 1.0),
       body: Center(
         child: SingleChildScrollView(
           child: Form(
@@ -32,26 +32,28 @@ class _SignUpState extends State<SignUp> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  //We will copy the previous textfield we designed to avoid time consuming
-
                   const ListTile(
                     title: Text(
                       "Register New Account",
-                      style:
-                          TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 50,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(0, 173, 181, 1.0), // Màu chữ
+                      ),
                     ),
                   ),
 
-                  //As we assigned our controller to the textformfields
-
+                  // Username field
                   Container(
                     margin: EdgeInsets.all(8),
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.deepPurple.withOpacity(.2)),
+                        borderRadius: BorderRadius.circular(25),
+                        color: Color.fromRGBO(0, 173, 181, 1.0)),
                     child: TextFormField(
+                      style: TextStyle(
+                          color: Color.fromRGBO(238, 238, 238, 1.0)), // Màu chữ
                       controller: username,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -60,101 +62,125 @@ class _SignUpState extends State<SignUp> {
                         return null;
                       },
                       decoration: const InputDecoration(
-                        icon: Icon(Icons.person),
+                        icon: Icon(Icons.person,
+                            color:
+                                Color.fromRGBO(238, 238, 238, 1.0)), // Màu icon
                         border: InputBorder.none,
                         hintText: "Username",
+                        hintStyle: TextStyle(
+                            color: Color.fromRGBO(
+                                238, 238, 238, 1.0)), // Màu chữ gợi ý
                       ),
                     ),
                   ),
 
-                  //Password field
+                  // Password field
                   Container(
-                    margin: const EdgeInsets.all(8),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.deepPurple.withOpacity(.2)),
-                    child: TextFormField(
-                      controller: password,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Password is required";
-                        } else if (value.length < 8) {
-                          return "Password must be at least 8 characters long";
-                        } else if (!RegExp(
-                                r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
-                            .hasMatch(value)) {
-                          return "Password must contain at least one special character";
-                        }
-                        return null;
-                      },
-                      obscureText: !isVisible,
-                      decoration: InputDecoration(
-                          icon: const Icon(Icons.lock),
+                      margin: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 18, vertical: 6),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Color.fromRGBO(0, 173, 181, 1.0)),
+                      child: TextFormField(
+                        style: TextStyle(
+                            color:
+                                Color.fromRGBO(238, 238, 238, 1.0)), // Màu chữ
+                        controller: password,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Password is required";
+                          } else if (value.length < 8) {
+                            return "Password must be at least 8 characters long";
+                          } else if (!RegExp(
+                                  r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                              .hasMatch(value)) {
+                            return "Password must contain at least one special character";
+                          }
+                          return null;
+                        },
+                        obscureText: !isVisible,
+                        decoration: InputDecoration(
+                          icon: const Icon(Icons.lock,
+                              color: Color.fromRGBO(
+                                  238, 238, 238, 1.0)), // Màu icon
                           border: InputBorder.none,
                           hintText: "Password",
+                          hintStyle: TextStyle(
+                              color: Color.fromRGBO(
+                                  238, 238, 238, 1.0)), // Màu chữ gợi ý
                           suffixIcon: IconButton(
                               onPressed: () {
-                                //In here we will create a click to show and hide the password a toggle button
                                 setState(() {
-                                  //toggle button
                                   isVisible = !isVisible;
                                 });
                               },
-                              icon: Icon(isVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off))),
-                    ),
-                  ),
+                              icon: Icon(
+                                  isVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Color.fromRGBO(
+                                      238, 238, 238, 1.0))), // Màu icon
+                        ),
+                      )),
 
-                  //Confirm Password field
-                  // Now we check whether password matches or not
+                  // Confirm Password field
                   Container(
-                    margin: const EdgeInsets.all(8),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.deepPurple.withOpacity(.2)),
-                    child: TextFormField(
-                      controller: confirmPassword,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "password is required";
-                        } else if (password.text != confirmPassword.text) {
-                          return "Passwords don't match";
-                        }
-                        return null;
-                      },
-                      obscureText: !isVisible,
-                      decoration: InputDecoration(
-                          icon: const Icon(Icons.lock),
+                      margin: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 18, vertical: 6),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Color.fromRGBO(0, 173, 181, 1.0)),
+                      child: TextFormField(
+                        style: TextStyle(
+                            color:
+                                Color.fromRGBO(238, 238, 238, 1.0)), // Màu chữ
+                        controller: confirmPassword,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "password is required";
+                          } else if (password.text != confirmPassword.text) {
+                            return "Passwords don't match";
+                          }
+                          return null;
+                        },
+                        obscureText: !isVisible,
+                        decoration: InputDecoration(
+                          icon: const Icon(Icons.lock,
+                              color: Color.fromRGBO(
+                                  238, 238, 238, 1.0)), // Màu icon
                           border: InputBorder.none,
                           hintText: "Password",
+                          hintStyle: TextStyle(
+                              color: Color.fromRGBO(
+                                  238, 238, 238, 1.0)), // Màu chữ gợi ý
                           suffixIcon: IconButton(
                               onPressed: () {
-                                //In here we will create a click to show and hide the password a toggle button
                                 setState(() {
-                                  //toggle button
                                   isVisible = !isVisible;
                                 });
                               },
-                              icon: Icon(isVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off))),
-                    ),
-                  ),
+                              icon: Icon(
+                                  isVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Color.fromRGBO(
+                                      238, 238, 238, 1.0))), // Màu icon
+                        ),
+                      )),
 
                   // Email field
                   Container(
                     margin: EdgeInsets.all(8),
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.deepPurple.withOpacity(.2)),
+                        borderRadius: BorderRadius.circular(25),
+                        color: Color.fromRGBO(0, 173, 181, 1.0)),
                     child: TextFormField(
+                      style: TextStyle(
+                          color: Color.fromRGBO(238, 238, 238, 1.0)), // Màu chữ
                       controller: email,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -166,26 +192,29 @@ class _SignUpState extends State<SignUp> {
                         return null;
                       },
                       decoration: const InputDecoration(
-                        icon: Icon(Icons.email),
+                        icon: Icon(Icons.email,
+                            color:
+                                Color.fromRGBO(238, 238, 238, 1.0)), // Màu icon
                         border: InputBorder.none,
                         hintText: "Email",
+                        hintStyle: TextStyle(
+                            color: Color.fromRGBO(
+                                238, 238, 238, 1.0)), // Màu chữ gợi ý
                       ),
                     ),
                   ),
 
                   const SizedBox(height: 10),
-                  //Login button
+                  // Sign Up button
                   Container(
                     height: 55,
-                    width: MediaQuery.of(context).size.width * .9,
+                    width: MediaQuery.of(context).size.width * .5,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Colors.deepPurple),
+                        color: Color.fromRGBO(0, 173, 181, 1.0)),
                     child: TextButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            // Login method will be here
-
                             final db = Mysql();
                             db
                                 .signup(
@@ -194,7 +223,6 @@ class _SignUpState extends State<SignUp> {
                               email.text,
                             )
                                 .whenComplete(() {
-                              //After success user creation go to login screen
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -205,24 +233,39 @@ class _SignUpState extends State<SignUp> {
                         },
                         child: const Text(
                           "SIGN UP",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                            color:
+                                Color.fromRGBO(238, 238, 238, 1.0), // Màu chữ
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         )),
                   ),
 
-                  //Sign up button
+                  // Login button
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Already have an account?"),
+                      Text(
+                        "Already have an account?",
+                        style: TextStyle(
+                            color:
+                                Color.fromRGBO(238, 238, 238, 1.0)), // Màu chữ
+                      ),
                       TextButton(
                           onPressed: () {
-                            //Navigate to sign up
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => LoginScreen()));
                           },
-                          child: const Text("Login"))
+                          child: Text(
+                            "Login",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color.fromRGBO(
+                                    0, 173, 181, 1.0)), // Màu chữ
+                          )),
                     ],
                   )
                 ],

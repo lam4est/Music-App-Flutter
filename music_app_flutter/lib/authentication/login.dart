@@ -11,153 +11,184 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  //We need two text editing controller
-
-  //TextEditing controller to control the text when we enter into it
+  // TextEditing controllers to control the text input
   final username = TextEditingController();
   final password = TextEditingController();
 
-  //A bool variable for show and hide password
+  // Bool variable to show and hide the password
   bool isVisible = false;
 
-  //Here is our bool variable
+  // Bool variable to show error message if login is incorrect
   bool isLoginTrue = false;
 
-  //Now we should call this function in login button
+  // Function to handle login
   login() async {
     var db = Mysql();
     var response = await db.login(username.text, password.text);
     if (response == true) {
-      //If login is correct, then goto notes
+      // If login is correct, navigate to the main app
       if (!mounted) return;
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => MyApp()));
     } else {
-      //If not, true the bool value to show error message
+      // If login is incorrect, show the error message
       setState(() {
         isLoginTrue = true;
       });
     }
   }
 
-  //We have to create global key for our form
+  // Global key for the form
   final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(34, 34, 34, 1.0),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            //We put all our textfield to a form to be controlled and not allow as empty
             child: Form(
               key: formKey,
               child: Column(
                 children: [
-                  //Username field
-
-                  //Before we show the image, after we copied the image we need to define the location in pubspec.yaml
                   Image.asset(
-                    "assets/logo1212.png",
-                    width: 210,
+                    "assets/logoJoySongMain.png",
+                    width: 400,
                   ),
                   const SizedBox(height: 15),
+                  // Username field
                   Container(
                     margin: const EdgeInsets.all(8),
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.deepPurple.withOpacity(.2)),
+                      borderRadius: BorderRadius.circular(25),
+                      color: Color.fromRGBO(0, 173, 181, 1.0),
+                    ),
                     child: TextFormField(
+                      cursorColor: Color.fromRGBO(0, 173, 181, 1.0),
                       controller: username,
+                      style: TextStyle(
+                          color: Color.fromRGBO(
+                              238, 238, 238, 1.0)), // Set text color to white
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "username is required";
+                          return "Username is required";
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.person),
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.person,
+                            color: Color.fromRGBO(
+                                238, 238, 238, 1.0)), // Set icon color to white
                         border: InputBorder.none,
                         hintText: "Username",
+                        hintStyle: TextStyle(
+                            color: Color.fromRGBO(238, 238, 238,
+                                1.0)), // Set hint text color to a lighter white
                       ),
                     ),
                   ),
 
-                  //Password field
+                  // Password field
                   Container(
                     margin: const EdgeInsets.all(8),
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.deepPurple.withOpacity(.2)),
+                      borderRadius: BorderRadius.circular(25),
+                      color: Color.fromRGBO(0, 173, 181, 1.0),
+                    ),
                     child: TextFormField(
                       controller: password,
+                      style:
+                          TextStyle(color: Color.fromRGBO(238, 238, 238, 1.0)),
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "password is required";
+                          return "Password is required";
                         }
                         return null;
                       },
                       obscureText: !isVisible,
                       decoration: InputDecoration(
-                          icon: const Icon(Icons.lock),
-                          border: InputBorder.none,
-                          hintText: "Password",
-                          suffixIcon: IconButton(
-                              onPressed: () {
-                                //In here we will create a click to show and hide the password a toggle button
-                                setState(() {
-                                  //toggle button
-                                  isVisible = !isVisible;
-                                });
-                              },
-                              icon: Icon(isVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off))),
+                        icon: Icon(Icons.lock,
+                            color: Color.fromRGBO(
+                                238, 238, 238, 1.0)), // Set icon color to white
+                        border: InputBorder.none,
+                        hintText: "Password",
+                        hintStyle: TextStyle(
+                            color: Color.fromRGBO(238, 238, 238,
+                                1.0)), // Set hint text color to a lighter white
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isVisible = !isVisible;
+                            });
+                          },
+                          icon: Icon(
+                            isVisible ? Icons.visibility : Icons.visibility_off,
+                            color: Color.fromRGBO(238, 238, 238, 1.0),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
 
                   const SizedBox(height: 10),
-                  //Login button
+                  // Login button
                   Container(
                     height: 55,
-                    width: MediaQuery.of(context).size.width * .9,
+                    width: MediaQuery.of(context).size.width * .5,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.deepPurple),
+                      borderRadius: BorderRadius.circular(8),
+                      color: Color.fromRGBO(0, 173, 181, 1.0),
+                    ),
                     child: TextButton(
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            login();
-                          }
-                        },
-                        child: const Text(
-                          "LOGIN",
-                          style: TextStyle(color: Colors.white),
-                        )),
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          login();
+                        }
+                      },
+                      child: const Text(
+                        "LOGIN",
+                        style: TextStyle(
+                          color: Color.fromRGBO(238, 238, 238, 1.0),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
 
-                  //Sign up button
+                  // Sign up button
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Don't have an account?"),
+                      const Text(
+                        "Don't have an account?",
+                        style: TextStyle(
+                            color: Color.fromRGBO(
+                                238, 238, 238, 1.0)), // Set text color to white
+                      ),
                       TextButton(
-                          onPressed: () {
-                            //Navigate to sign up
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const SignUp()));
-                          },
-                          child: const Text("SIGN UP"))
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SignUp()));
+                        },
+                        child: const Text(
+                          "SIGN UP",
+                          style: TextStyle(
+                              color: Color.fromRGBO(0, 173, 181, 1.0)),
+                        ),
+                      ),
                     ],
                   ),
 
-                  // We will disable this message in default, when user and pass is incorrect we will trigger this message to user
+                  // Login error message
                   isLoginTrue
                       ? const Text(
                           "Username or password is incorrect",

@@ -116,7 +116,7 @@ class _AlbumViewState extends State<AlbumView> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 40),
+                      padding: const EdgeInsets.only(top: 22),
                       child: Column(
                         children: [
                           SizedBox(height: initialSize + 32),
@@ -125,28 +125,18 @@ class _AlbumViewState extends State<AlbumView> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum",
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                                SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    Image(
-                                      image: AssetImage('assets/logo1212.png'),
-                                      width: 32,
-                                      height: 32,
-                                    ),
-                                    SizedBox(width: 8),
-                                    Text("Spotify")
-                                  ],
+                                Center(
+                                  child: Text("Đánh đổi - OBITO",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold)),
                                 ),
                                 SizedBox(height: 8),
                                 Text(
-                                  "1,888,132 likes 5h 3m",
-                                  style: Theme.of(context).textTheme.bodySmall,
+                                  "1,888,132 likes",
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
-                                SizedBox(height: 16),
+                                SizedBox(height: 8),
                                 Stack(
                                   clipBehavior: Clip.none,
                                   children: [
@@ -302,7 +292,7 @@ class _AlbumViewState extends State<AlbumView> {
                       Positioned(
                         right: 0,
                         bottom:
-                            80 - containerHeight.clamp(120.0, double.infinity),
+                            130 - containerHeight.clamp(165.0, double.infinity),
                         child: Stack(
                           alignment: Alignment.bottomRight,
                           children: [
@@ -312,11 +302,12 @@ class _AlbumViewState extends State<AlbumView> {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Color.fromARGB(255, 8, 187, 77),
+                                color: Color.fromRGBO(238, 238, 238, 1.0),
                               ),
                               child: Icon(
                                 Icons.play_arrow,
                                 size: 38,
+                                color: Color.fromRGBO(0, 173, 181, 1.0),
                               ),
                             ),
                             Container(
@@ -324,11 +315,11 @@ class _AlbumViewState extends State<AlbumView> {
                               height: 24,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Color.fromRGBO(238, 238, 238, 1.0),
+                                color: Color.fromRGBO(0, 173, 181, 1.0),
                               ),
                               child: Icon(
                                 Icons.shuffle,
-                                color: Color.fromRGBO(34, 40, 49, 1.0),
+                                color: Color.fromRGBO(238, 238, 238, 1.0),
                                 size: 14,
                               ),
                             )
