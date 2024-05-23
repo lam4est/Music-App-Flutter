@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:music_app_flutter/logic/models/songs.dart';
 import 'package:music_app_flutter/logic/mysql.dart';
 import 'package:music_app_flutter/views/library.dart';
+import 'package:music_app_flutter/widgets/PlaylistUtils.dart';
 import 'package:music_app_flutter/widgets/SongProvider.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 class SearchView extends StatefulWidget {
   const SearchView({super.key});
@@ -39,23 +38,24 @@ class _SearchViewState extends State<SearchView> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              SizedBox(height: 16),
+              SizedBox(height: 30),
               const ListTile(
                 title: Text(
                   "What do you want to listen to?",
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.bold,
+                    color: Color.fromRGBO(0, 173, 181, 1.0),
                   ),
                 ),
               ),
               Container(
                 margin: EdgeInsets.all(8),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.deepPurple.withOpacity(.2),
+                  borderRadius: BorderRadius.circular(25),
+                  color: const Color.fromRGBO(57, 62, 70, 1.0),
                 ),
                 child: TextFormField(
                   controller: titleController,
@@ -95,65 +95,35 @@ class SearchResult extends StatelessWidget {
   const SearchResult({Key? key, required this.song, required this.playlists})
       : super(key: key);
 
-  Future<void> _addSongToPlaylist(String playlistName) async {
-    final prefs = await SharedPreferences.getInstance();
-    List<String> playlist = prefs.getStringList(playlistName) ?? [];
-
-    // Convert song to JSON string and add to playlist
-    var songJson = jsonEncode(song.map((key, value) {
-      if (value is DateTime) {
-        return MapEntry(key, value.toIso8601String());
-      }
-      return MapEntry(key, value);
-    }));
-    playlist.add(songJson);
-    await prefs.setStringList(playlistName, playlist);
-  }
-
-  void _choosePlaylist(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Choose Playlist'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (String playlistName in playlists)
-                ListTile(
-                  title: Text(playlistName),
-                  onTap: () {
-                    _addSongToPlaylist(playlistName);
-                    Navigator.of(context).pop();
-                  },
-                ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Color.fromRGBO(57, 62, 70, 1.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
       margin: EdgeInsets.symmetric(vertical: 6),
       child: ListTile(
-        leading: Image.asset(song['image'],
-            width: 60, height: 60, fit: BoxFit.cover),
-        title: Text(song['title']),
-        subtitle: Text('${song['artist']}'),
+        leading: song['image'] != null
+            ? Image.asset(song['image'],
+                width: 60, height: 60, fit: BoxFit.cover)
+            : Icon(Icons.music_note),
+        title: Text(song['title'],
+            style: TextStyle(color: Color.fromRGBO(238, 238, 238, 1.0))),
+        subtitle: Text(song['artist'],
+            style: TextStyle(color: Color.fromRGBO(238, 238, 238, 1.0))),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              icon: Icon(Icons.favorite),
+              icon: Icon(Icons.favorite, color: Color.fromRGBO(238, 238, 238,1.0)),
               onPressed: () {
-                _choosePlaylist(context);
+                PlaylistUtils.choosePlaylist(context, song, playlists);
               },
             ),
             IconButton(
-              icon: Icon(Icons.play_arrow),
+              icon:
+                  Icon(Icons.play_arrow, color: Color.fromRGBO(238, 238, 238,1.0)), 
               onPressed: () {
                 final selectedSong = Song(
                   title: song['title'],

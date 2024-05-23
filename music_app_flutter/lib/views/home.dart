@@ -19,7 +19,7 @@ class _HomeViewState extends State<HomeView> {
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * .6,
-            decoration: BoxDecoration(color: Color(0xFf1C7A74)),
+            decoration: BoxDecoration(color: Color.fromRGBO(0, 173, 181, 1.0)),
           ),
           SingleChildScrollView(
             physics: BouncingScrollPhysics(),
@@ -29,11 +29,11 @@ class _HomeViewState extends State<HomeView> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withOpacity(0),
-                    Colors.black.withOpacity(.9),
-                    Colors.black.withOpacity(1),
-                    Colors.black.withOpacity(1),
-                    Colors.black.withOpacity(1),
+                    Color.fromRGBO(0, 173, 181, 1.0).withOpacity(.0),
+                    Color.fromRGBO(0, 173, 181, 1.0).withOpacity(.8),
+                    Color.fromRGBO(34, 40, 49, 1.0).withOpacity(1),
+                    Color.fromRGBO(34, 40, 49, 1.0).withOpacity(1),
+                    Color.fromRGBO(34, 40, 49, 1.0).withOpacity(1),
                   ],
                 ),
               ),
@@ -49,8 +49,12 @@ class _HomeViewState extends State<HomeView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Recently Played",
-                          style: Theme.of(context).textTheme.headlineSmall,
+                          "What's a music !!",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 35,
+                            color: Color.fromRGBO(238, 238, 238, 1.0),
+                          ),
                         ),
                         Row(
                           children: [
@@ -79,6 +83,8 @@ class _HomeViewState extends State<HomeView> {
                                 builder: (context) => AlbumView(
                                   image: AssetImage(
                                       "assets/WeDontTalkAnymore.jpg"),
+                                  song: {},
+                                  playlists: [],
                                 ),
                               ),
                             );
@@ -94,6 +100,8 @@ class _HomeViewState extends State<HomeView> {
                               MaterialPageRoute(
                                 builder: (context) => AlbumView(
                                   image: AssetImage("assets/Photograph.jpg"),
+                                  song: {},
+                                  playlists: [],
                                 ),
                               ),
                             );
@@ -109,6 +117,8 @@ class _HomeViewState extends State<HomeView> {
                               MaterialPageRoute(
                                 builder: (context) => AlbumView(
                                   image: AssetImage("assets/Photograph.jpg"),
+                                  song: {},
+                                  playlists: [],
                                 ),
                               ),
                             );
@@ -125,6 +135,8 @@ class _HomeViewState extends State<HomeView> {
                               MaterialPageRoute(
                                 builder: (context) => AlbumView(
                                   image: AssetImage("assets/Photograph.jpg"),
+                                  song: {},
+                                  playlists: [],
                                 ),
                               ),
                             );
@@ -140,6 +152,8 @@ class _HomeViewState extends State<HomeView> {
                               MaterialPageRoute(
                                 builder: (context) => AlbumView(
                                   image: AssetImage("assets/Photograph.jpg"),
+                                  song: {},
+                                  playlists: [],
                                 ),
                               ),
                             );
@@ -170,6 +184,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -188,6 +204,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -210,6 +228,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -228,6 +248,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -250,6 +272,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -268,6 +292,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -296,7 +322,7 @@ class _HomeViewState extends State<HomeView> {
                           children: [
                             SongCard(
                               image: AssetImage("assets/WeDontTalkAnymore.png"),
-                              label: 'Phia sau mot co gai',
+                              label: 'We Dont Talk Anymore',
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -304,6 +330,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      playlists: [],
+                                      song: {},
                                     ),
                                   ),
                                 );
@@ -314,7 +342,7 @@ class _HomeViewState extends State<HomeView> {
                             ),
                             SongCard(
                               image: AssetImage("assets/Attention.png"),
-                              label: 'Phia sau mot co gai',
+                              label: 'Attention',
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -322,6 +350,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -332,7 +362,7 @@ class _HomeViewState extends State<HomeView> {
                             ),
                             SongCard(
                               image: AssetImage("assets/PhiaSauMotCoGai.png"),
-                              label: 'Phia sau mot co gai',
+                              label: 'Phía sau một cô gái',
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -340,6 +370,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -350,7 +382,7 @@ class _HomeViewState extends State<HomeView> {
                             ),
                             SongCard(
                               image: AssetImage("assets/MatTroiCuaEm.jpg"),
-                              label: 'Phia sau mot co gai',
+                              label: 'Mặt Trời Của Em',
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -358,6 +390,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -367,9 +401,8 @@ class _HomeViewState extends State<HomeView> {
                               width: 16,
                             ),
                             SongCard(
-                              image: AssetImage(
-                                  "assets/SomethingJustLikeThis.png"),
-                              label: 'Phia sau mot co gai',
+                              image: AssetImage("assets/TinhYeuChamTre.jpg"),
+                              label: 'Tình Yêu Chậm Trễ',
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -377,6 +410,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -386,9 +421,8 @@ class _HomeViewState extends State<HomeView> {
                               width: 16,
                             ),
                             SongCard(
-                              image: AssetImage(
-                                  "assets/YeuAnhDiMeAnhBanBanhMi.jpg"),
-                              label: 'Phia sau mot co gai',
+                              image: AssetImage("assets/Perfect.jpg"),
+                              label: 'Perfect',
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -396,6 +430,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -435,6 +471,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -453,6 +491,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -471,6 +511,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -489,6 +531,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -508,6 +552,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );
@@ -527,6 +573,8 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context) => AlbumView(
                                       image:
                                           AssetImage("assets/Photograph.jpg"),
+                                      song: {},
+                                      playlists: [],
                                     ),
                                   ),
                                 );

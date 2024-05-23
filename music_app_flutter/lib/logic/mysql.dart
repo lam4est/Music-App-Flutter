@@ -61,6 +61,7 @@ class Mysql {
     }
   }
 
+  // SEARCH SONG
   Future<List<Map<String, dynamic>>> searchSongs(String keyword) async {
     var conn = await getConnection();
     try {
@@ -71,6 +72,23 @@ class Mysql {
       return results.map((row) => row.fields).toList();
     } catch (e) {
       print('Search failed: $e');
+      return [];
+    } finally {
+      await conn.close();
+    }
+  }
+
+  // GET RANDOM SONG
+  Future<List<Map<String, dynamic>>> getRandomSongs(int count) async {
+    var conn = await getConnection();
+    try {
+      var results = await conn.query(
+        'SELECT * FROM songs ORDER BY RAND() LIMIT ?',
+        [count],
+      );
+      return results.map((row) => row.fields).toList();
+    } catch (e) {
+      print('Failed to get random songs: $e');
       return [];
     } finally {
       await conn.close();

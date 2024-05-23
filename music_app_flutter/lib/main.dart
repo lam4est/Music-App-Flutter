@@ -9,13 +9,13 @@ import 'package:provider/provider.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarBrightness: Brightness.dark,
-    systemNavigationBarColor: Colors.transparent,
-    systemNavigationBarDividerColor: Colors.transparent,
-    systemNavigationBarIconBrightness: Brightness.dark,
-    statusBarIconBrightness: Brightness.dark,
-  ));
+      // statusBarColor: Colors.transparent,
+      // statusBarBrightness: Brightness.dark,
+      // systemNavigationBarColor: Colors.transparent,
+      // systemNavigationBarDividerColor: Colors.transparent,
+      // systemNavigationBarIconBrightness: Brightness.dark,
+      // statusBarIconBrightness: Brightness.dark,
+      ));
   runApp(
     ChangeNotifierProvider(
       create: (_) => SongProvider(),
@@ -36,19 +36,18 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
       darkTheme: ThemeData(
-        scaffoldBackgroundColor: Color.fromRGBO(35, 35, 35, 0),
+        scaffoldBackgroundColor: Color.fromRGBO(34, 40, 49, 1.0),
         brightness: Brightness.dark,
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Color.fromRGBO(211, 203, 203, 0),
+          backgroundColor: Color.fromRGBO(0, 173, 181, 1.0),
           type: BottomNavigationBarType.fixed,
-          selectedLabelStyle: TextStyle(
-            fontSize: 12,
-          ),
+          selectedLabelStyle:
+              TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           unselectedLabelStyle: TextStyle(
             fontSize: 12,
           ),
           selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white38,
+          unselectedItemColor: Colors.white,
         ),
       ),
       home: Scaffold(
@@ -81,7 +80,8 @@ class MyAppLogin extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: Color.fromRGBO(0, 173, 181, 1.0)),
         useMaterial3: true,
       ),
       home: LoginScreen(),

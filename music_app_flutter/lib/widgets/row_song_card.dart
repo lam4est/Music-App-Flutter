@@ -24,13 +24,16 @@ class RowAlbumCard extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => AlbumView(
                 image: image,
+                song: {},
+                playlists: [],
               ),
             ),
           );
         },
         child: Container(
           decoration: BoxDecoration(
-              color: Colors.white10, borderRadius: BorderRadius.circular(4)),
+              color: Color.fromRGBO(57, 62, 70, 1.0),
+              borderRadius: BorderRadius.circular(8)),
           clipBehavior: Clip.antiAlias,
           child: Row(
             children: [

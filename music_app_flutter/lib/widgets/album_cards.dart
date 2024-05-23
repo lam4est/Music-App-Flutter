@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:music_app_flutter/views/album_view.dart';
 
 class AlbumCard extends StatelessWidget {
+  
   final ImageProvider image;
   final String label;
   final Function onTap;
@@ -23,7 +24,7 @@ class AlbumCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => AlbumView(
-              image: image,
+              image: image, song: {}, playlists: [],
             ),
           ),
         );

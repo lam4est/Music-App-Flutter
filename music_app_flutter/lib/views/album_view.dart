@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:music_app_flutter/views/library.dart';
+import 'package:music_app_flutter/widgets/PlaylistUtils.dart';
 import 'package:music_app_flutter/widgets/album_cards.dart';
 
 class AlbumView extends StatefulWidget {
   final ImageProvider image;
+  final Map<String, dynamic> song;
+  final List<String> playlists;
 
-  const AlbumView({Key? key, required this.image}) : super(key: key);
+  const AlbumView(
+      {Key? key,
+      required this.image,
+      required this.song,
+      required this.playlists})
+      : super(key: key);
+
   @override
   _AlbumViewState createState() => _AlbumViewState();
 }
@@ -53,7 +63,7 @@ class _AlbumViewState extends State<AlbumView> {
             height: containerHeight,
             width: MediaQuery.of(context).size.width,
             alignment: Alignment.center,
-            color: Colors.pink,
+            color: Color.fromRGBO(0, 173, 181, 1.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -63,7 +73,8 @@ class _AlbumViewState extends State<AlbumView> {
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(.5),
+                          color:
+                              Color.fromRGBO(34, 40, 49, 1.0).withOpacity(.5),
                           offset: Offset(0, 20),
                           blurRadius: 32,
                           spreadRadius: 16,
@@ -97,9 +108,10 @@ class _AlbumViewState extends State<AlbumView> {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Colors.black.withOpacity(0),
-                          Colors.black.withOpacity(0),
-                          Colors.black.withOpacity(1),
+                          Color.fromRGBO(34, 40, 49, 1.0).withOpacity(0),
+                          Color.fromRGBO(34, 40, 49, 1.0).withOpacity(0),
+                          Color.fromRGBO(34, 40, 49, 1.0).withOpacity(1),
+                          Color.fromRGBO(34, 40, 49, 1.0).withOpacity(1),
                         ],
                       ),
                     ),
@@ -140,11 +152,24 @@ class _AlbumViewState extends State<AlbumView> {
                                   children: [
                                     Row(
                                       children: [
-                                        Icon(Icons.favorite),
+                                        IconButton(
+                                          icon: Icon(Icons.favorite),
+                                          onPressed: () {
+                                            PlaylistUtils.choosePlaylist(
+                                                context,
+                                                widget.song,
+                                                playlists);
+                                          },
+                                        ),
                                         SizedBox(width: 16),
-                                        Icon(Icons.more_horiz),
+                                        IconButton(
+                                          icon: Icon(Icons.more_horiz),
+                                          onPressed: () {
+                                            // Thêm logic xử lý khi nút được nhấn
+                                          },
+                                        ),
                                       ],
-                                    ),
+                                    )
                                   ],
                                 )
                               ],
@@ -156,7 +181,7 @@ class _AlbumViewState extends State<AlbumView> {
                   ),
                   Container(
                     padding: EdgeInsets.all(16),
-                    color: Colors.black,
+                    color: Color.fromRGBO(34, 40, 49, 1.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -174,34 +199,14 @@ class _AlbumViewState extends State<AlbumView> {
                             children: [
                               AlbumCard(
                                 size: cardSize,
-                                label: "Get Turnt",
+                                label: "Photograph",
                                 image: AssetImage("assets/Photograph.jpg"),
                                 onTap: () {},
                               ),
                               AlbumCard(
                                 size: cardSize,
-                                label: "Get Turnt",
-                                image: AssetImage("assets/Photograph.jpg"),
-                                onTap: () {},
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              AlbumCard(
-                                size: cardSize,
-                                label: "Get Turnt",
-                                image: AssetImage("assets/Photograph.jpg"),
-                                onTap: () {},
-                              ),
-                              AlbumCard(
-                                size: cardSize,
-                                label: "Get Turnt",
-                                image: AssetImage("assets/Photograph.jpg"),
+                                label: "Lạc Trôi",
+                                image: AssetImage("assets/LacTroi.jpg"),
                                 onTap: () {},
                               ),
                             ],
@@ -214,14 +219,34 @@ class _AlbumViewState extends State<AlbumView> {
                             children: [
                               AlbumCard(
                                 size: cardSize,
-                                label: "Get Turnt",
-                                image: AssetImage("assets/Photograph.jpg"),
+                                label: "Missing You",
+                                image: AssetImage("assets/MissingYou.jpg"),
                                 onTap: () {},
                               ),
                               AlbumCard(
                                 size: cardSize,
-                                label: "Get Turnt",
-                                image: AssetImage("assets/Photograph.jpg"),
+                                label: "Shape of You",
+                                image: AssetImage("assets/ShapeOfYou.jpg"),
+                                onTap: () {},
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AlbumCard(
+                                size: cardSize,
+                                label: "Sau Tất Cả",
+                                image: AssetImage("assets/SauTatCa.jpg"),
+                                onTap: () {},
+                              ),
+                              AlbumCard(
+                                size: cardSize,
+                                label: "Perfect",
+                                image: AssetImage("assets/Perfect.jpg"),
                                 onTap: () {},
                               ),
                             ],
@@ -240,8 +265,8 @@ class _AlbumViewState extends State<AlbumView> {
             child: AnimatedContainer(
               duration: Duration(milliseconds: 250),
               color: showTopBar
-                  ? Color(0xFFC61855).withOpacity(1)
-                  : Color(0xFFC61855).withOpacity(0),
+                  ? Color.fromRGBO(0, 173, 181, 1.0).withOpacity(1)
+                  : Color.fromRGBO(0, 173, 181, 1.0).withOpacity(0),
               padding: EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 8,
@@ -270,7 +295,7 @@ class _AlbumViewState extends State<AlbumView> {
                         duration: Duration(milliseconds: 250),
                         opacity: showTopBar ? 1 : 0,
                         child: Text(
-                          "Ophelia",
+                          "Music Library",
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
@@ -287,7 +312,7 @@ class _AlbumViewState extends State<AlbumView> {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Color(0xff14D860),
+                                color: Color.fromARGB(255, 8, 187, 77),
                               ),
                               child: Icon(
                                 Icons.play_arrow,
@@ -299,11 +324,11 @@ class _AlbumViewState extends State<AlbumView> {
                               height: 24,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.white,
+                                color: Color.fromRGBO(238, 238, 238, 1.0),
                               ),
                               child: Icon(
                                 Icons.shuffle,
-                                color: Colors.black,
+                                color: Color.fromRGBO(34, 40, 49, 1.0),
                                 size: 14,
                               ),
                             )

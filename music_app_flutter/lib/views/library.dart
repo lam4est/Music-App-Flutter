@@ -84,18 +84,35 @@ class _LibraryViewState extends State<LibraryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Your Library'),
-      ),
-      body: ListView(
-        padding: EdgeInsets.all(16.0),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          _buildSectionTitle('Playlists'),
-          for (String playlistName in playlists)
-            _buildPlaylistItem(playlistName),
+          Container(
+            padding: EdgeInsets.only(top: 60.0, right: 20.0, left: 20.0),
+            child: Text(
+              "What is your favorite playlist?",
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                color: Color.fromRGBO(0, 173, 181, 1.0),
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.all(16.0),
+              children: [
+                _buildSectionTitle('Playlists'),
+                for (String playlistName in playlists)
+                  _buildPlaylistItem(playlistName),
+              ],
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromRGBO(0, 173, 181, 1.0),
+        foregroundColor: Color.fromRGBO(238, 238, 238, 1.0),
         onPressed: () {
           _addPlaylist(context);
         },
@@ -118,34 +135,40 @@ class _LibraryViewState extends State<LibraryView> {
   }
 
   Widget _buildPlaylistItem(String playlistName) {
-    return ListTile(
-      leading: Icon(Icons.queue_music),
-      title: Text(playlistName),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: Icon(Icons.play_arrow),
-            onPressed: () {
-              _playPlaylist(playlistName);
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () {
-              _confirmDeletePlaylist(context, playlistName);
-            },
-          ),
-        ],
+    return Card(
+      color: Color.fromRGBO(57, 62, 70, 1.0),
+      elevation: 4.0,
+      margin: EdgeInsets.symmetric(vertical: 4.0),
+      child: ListTile(
+        leading: Icon(Icons.queue_music),
+        title: Text(playlistName),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: Icon(Icons.play_arrow),
+              onPressed: () {
+                _playPlaylist(playlistName);
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                _confirmDeletePlaylist(context, playlistName);
+              },
+            ),
+          ],
+        ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  PlaylistSongsView(playlistName: playlistName),
+            ),
+          );
+        },
       ),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PlaylistSongsView(playlistName: playlistName),
-          ),
-        );
-      },
     );
   }
 
@@ -282,51 +305,60 @@ class _PlaylistSongsViewState extends State<PlaylistSongsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.playlistName),
+        title: Text(
+          widget.playlistName,
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Color.fromRGBO(0, 173, 181, 1.0),
       ),
-      body: songs.isEmpty
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: songs.length,
-              itemBuilder: (context, index) {
-                var song = songs[index];
-                return ListTile(
-                  leading: song['image'] != null
-                      ? Image.asset(
-                          song['image'],
-                          width: 60,
-                          height: 60,
-                          fit: BoxFit.cover,
-                        )
-                      : Icon(Icons.music_note),
-                  title: Text(song['title'] ?? ''),
-                  subtitle: Text(song['artist'] ?? ''),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      _deleteSong(index);
-                    },
-                  ),
-                  onTap: () {
-                    setState(() {
-                      currentIndex = index;
-                    });
-                    _showMusicPlayer(song);
-                  },
-                );
-              },
-            ),
+      body: Padding(
+        padding: EdgeInsets.only(top: 8.0),
+        child: songs.isEmpty
+            ? Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                itemCount: songs.length,
+                itemBuilder: (context, index) {
+                  var song = songs[index];
+                  return Card(
+                    color: Color.fromRGBO(57, 62, 70, 1.0),
+                    elevation: 4.0,
+                    margin:
+                        EdgeInsets.symmetric(vertical: 5.0, horizontal: 15.0),
+                    child: ListTile(
+                      leading: song['image'] != null
+                          ? Image.asset(
+                              song['image'],
+                              width: 60,
+                              height: 60,
+                              fit: BoxFit.cover,
+                            )
+                          : Icon(Icons.music_note),
+                      title: Text(song['title'] ?? ''),
+                      subtitle: Text(song['artist'] ?? ''),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          _deleteSong(index);
+                        },
+                      ),
+                      onTap: () {
+                        setState(() {
+                          currentIndex = index;
+                        });
+                        _showMusicPlayer(song);
+                      },
+                    ),
+                  );
+                },
+              ),
+      ),
     );
   }
 }
-// void _showMusicPlayer(BuildContext context, Map<String, dynamic> song) {
-//   showModalBottomSheet(
-//     context: context,
-//     builder: (context) {
-//       return MusicPlayer(song: song);
-//     },
-//   );
-// }
 
 class MusicPlayer extends StatelessWidget {
   final Map<String, dynamic> song;
@@ -355,10 +387,10 @@ class MusicPlayer extends StatelessWidget {
               : Container(
                   width: double.infinity,
                   height: 200,
-                  color: Colors.grey,
+                  color: Color.fromRGBO(238, 238, 238, 1.0),
                   child: Icon(
                     Icons.music_note,
-                    color: Colors.white,
+                    color: Color.fromRGBO(238, 238, 238, 1.0),
                     size: 100,
                   ),
                 ),
@@ -369,8 +401,8 @@ class MusicPlayer extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withOpacity(0.3),
-                    Colors.black.withOpacity(0.7),
+                    Color.fromRGBO(34, 40, 49, 1.0).withOpacity(0.3),
+                    Color.fromRGBO(34, 40, 49, 1.0).withOpacity(0.7),
                   ],
                 ),
               ),
@@ -394,10 +426,10 @@ class MusicPlayer extends StatelessWidget {
                       : Container(
                           width: 60,
                           height: 60,
-                          color: Colors.grey,
+                          color: Color.fromRGBO(238, 238, 238, 1.0),
                           child: Icon(
                             Icons.music_note,
-                            color: Colors.white,
+                            color: Color.fromRGBO(238, 238, 238, 1.0),
                           ),
                         ),
                 ),
@@ -410,14 +442,16 @@ class MusicPlayer extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                          color: Color.fromRGBO(238, 238, 238, 1.0)),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 4.0),
                     Text(
                       song['artist'] ?? '',
-                      style: TextStyle(fontSize: 14.0, color: Colors.white70),
+                      style: TextStyle(
+                          fontSize: 14.0,
+                          color: Color.fromRGBO(238, 238, 238, 1.0)),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -437,18 +471,21 @@ class MusicPlayer extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.skip_previous, color: Colors.white),
+                        icon: Icon(Icons.skip_previous,
+                            color: Color.fromRGBO(238, 238, 238, 1.0)),
                         onPressed: onPrevious,
                       ),
                       IconButton(
                         icon: Icon(Icons.play_arrow,
-                            color: Colors.white, size: 32),
+                            color: Color.fromRGBO(238, 238, 238, 1.0),
+                            size: 32),
                         onPressed: () {
                           // Play/pause logic
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.skip_next, color: Colors.white),
+                        icon: Icon(Icons.skip_next,
+                            color: Color.fromRGBO(238, 238, 238, 1.0)),
                         onPressed: onNext,
                       ),
                     ],
@@ -461,7 +498,8 @@ class MusicPlayer extends StatelessWidget {
             top: 8.0,
             right: 8.0,
             child: IconButton(
-              icon: Icon(Icons.close, color: Colors.white),
+              icon:
+                  Icon(Icons.close, color: Color.fromRGBO(238, 238, 238, 1.0)),
               onPressed: () {
                 Navigator.of(context).pop();
               },

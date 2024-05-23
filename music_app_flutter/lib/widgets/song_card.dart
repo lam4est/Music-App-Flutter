@@ -21,7 +21,7 @@ class SongCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => AlbumView(
-              image: image,
+              image: image, song: {}, playlists: [],
             ),
           ),
         );

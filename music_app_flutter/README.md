@@ -15,12 +15,8 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-
-- 29 16
-- 37 40
-
-- 46 00
-
-- 47 10
-
-- 54 05
+<!-- ĐỔ MÀU -->
+fromRGBO(34, 40, 49,1.0)    - Nền đen
+fromRGBO(57,62,70,1.0)      - Xám 
+fromRGBO(0, 173, 181,1.0)   - Xanh chủ đạo
+fromRGBO(238, 238, 238,1.0) - Text trắng
