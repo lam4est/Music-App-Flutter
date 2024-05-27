@@ -1,599 +1,206 @@
 import 'package:flutter/material.dart';
+import 'package:music_app_flutter/logic/mysql.dart';
 import 'package:music_app_flutter/views/album_view.dart';
-import 'package:music_app_flutter/widgets/album_cards.dart';
-import 'package:music_app_flutter/widgets/row_song_card.dart';
-import 'package:music_app_flutter/widgets/song_card.dart';
 
 class HomeView extends StatefulWidget {
+  const HomeView({super.key});
+
   @override
   State<HomeView> createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
+  final Mysql db = Mysql();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        alignment: Alignment.topLeft,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('XYZ Music', style: TextStyle(color: Colors.white)),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search, color: Colors.white),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.notifications, color: Colors.white),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.account_circle, color: Colors.white),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildBanner(),
+            _buildSectionTitle('Được Đề Xuất Cho Bạn'),
+            _buildHorizontalListView('suggested'),
+            SizedBox(
+              height: 10,
+            ),
+            _buildSectionTitle('Danh Sách Phát Mới'),
+            _buildHorizontalListView('new_playlists'),
+            SizedBox(
+              height: 10,
+            ),
+            _buildSectionTitle('Album Nổi Bật'),
+            _buildHorizontalListView('featured_albums'),
+            SizedBox(
+              height: 10,
+            ),
+            _buildSectionTitle('Bài Hát Yêu Thích'),
+            _buildHorizontalListView('favorite_songs'),
+            SizedBox(
+              height: 10,
+            ),
+            _buildSectionTitle('Top Bảng Xếp Hạng'),
+            _buildHorizontalListView('top_charts'),
+            SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBanner() {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      child: Stack(
         children: [
           Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * .6,
-            decoration: BoxDecoration(color: Color.fromRGBO(0, 173, 181, 1.0)),
-          ),
-          SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color.fromRGBO(0, 173, 181, 1.0).withOpacity(.0),
-                    Color.fromRGBO(0, 173, 181, 1.0).withOpacity(.8),
-                    Color.fromRGBO(34, 40, 49, 1.0).withOpacity(1),
-                    Color.fromRGBO(34, 40, 49, 1.0).withOpacity(1),
-                    Color.fromRGBO(34, 40, 49, 1.0).withOpacity(1),
-                  ],
-                ),
+            height: 200,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16.0),
+              image: const DecorationImage(
+                image: NetworkImage('https://via.placeholder.com/800x400'),
+                fit: BoxFit.cover,
               ),
-              child: SafeArea(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(height: 40),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "What's a music !!",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 35,
-                            color: Color.fromRGBO(238, 238, 238, 1.0),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Icon(Icons.history),
-                            SizedBox(width: 10),
-                            Icon(Icons.settings),
-                            SizedBox(width: 16),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    physics: BouncingScrollPhysics(),
-                    padding: EdgeInsets.all(20),
-                    child: Row(
-                      children: [
-                        AlbumCard(
-                          image: AssetImage("assets/LoiChoi.jpg"),
-                          label: 'Loi Choi',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AlbumView(
-                                  image: AssetImage(
-                                      "assets/WeDontTalkAnymore.jpg"),
-                                  song: {},
-                                  playlists: [],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(width: 16),
-                        AlbumCard(
-                          image: AssetImage("assets/99%.jpg"),
-                          label: '99%',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AlbumView(
-                                  image: AssetImage("assets/Photograph.jpg"),
-                                  song: {},
-                                  playlists: [],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(width: 16),
-                        AlbumCard(
-                          image: AssetImage("assets/DanhDoi.jpg"),
-                          label: 'Đánh đổi',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AlbumView(
-                                  image: AssetImage("assets/Photograph.jpg"),
-                                  song: {},
-                                  playlists: [],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(width: 16),
-                        AlbumCard(
-                          image: AssetImage(
-                              "assets/vaicaunoicokhiennguoithaydoi.jpg"),
-                          label: 'vaicaunoicokhiennguoithaydoi',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AlbumView(
-                                  image: AssetImage("assets/Photograph.jpg"),
-                                  song: {},
-                                  playlists: [],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(width: 16),
-                        AlbumCard(
-                          image: AssetImage("assets/ThePlayah.jpg"),
-                          label: 'The Playah',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AlbumView(
-                                  image: AssetImage("assets/Photograph.jpg"),
-                                  song: {},
-                                  playlists: [],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          "Good Evening",
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        SizedBox(height: 16),
-                        Row(
-                          children: [
-                            RowAlbumCard(
-                              label: "Nếu ngày ấy",
-                              image: AssetImage("assets/NeuNgayAy.jpg"),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            RowAlbumCard(
-                              label: "Tại vì sao",
-                              image: AssetImage("assets/TaiViSao.jpg"),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Row(
-                          children: [
-                            RowAlbumCard(
-                              label: "Đưa em về nhà",
-                              image: AssetImage("assets/DuaEmVeNha.jpg"),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            RowAlbumCard(
-                              label: "Chìm sâu",
-                              image: AssetImage("assets/ChimSau.jpg"),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Row(
-                          children: [
-                            RowAlbumCard(
-                              label: "Dont Let Me Down",
-                              image: AssetImage("assets/DontLetMeDown.jpg"),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            RowAlbumCard(
-                              label: "Đông kiếm em",
-                              image: AssetImage("assets/DongKiemEm.jpg"),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          "Based on your recent listening",
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        physics: BouncingScrollPhysics(),
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: [
-                            SongCard(
-                              image: AssetImage("assets/WeDontTalkAnymore.png"),
-                              label: 'We Dont Talk Anymore',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      playlists: [],
-                                      song: {},
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            SongCard(
-                              image: AssetImage("assets/Attention.png"),
-                              label: 'Attention',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            SongCard(
-                              image: AssetImage("assets/PhiaSauMotCoGai.png"),
-                              label: 'Phía sau một cô gái',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            SongCard(
-                              image: AssetImage("assets/MatTroiCuaEm.jpg"),
-                              label: 'Mặt Trời Của Em',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            SongCard(
-                              image: AssetImage("assets/TinhYeuChamTre.jpg"),
-                              label: 'Tình Yêu Chậm Trễ',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            SongCard(
-                              image: AssetImage("assets/Perfect.jpg"),
-                              label: 'Perfect',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          "Recomment radio",
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        physics: BouncingScrollPhysics(),
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: [
-                            SongCard(
-                              image: AssetImage("assets/WeDontTalkAnymore.png"),
-                              label: 'Phia sau mot co gai',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            SongCard(
-                              image: AssetImage("assets/Attention.png"),
-                              label: 'Phia sau mot co gai',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            SongCard(
-                              image: AssetImage("assets/PhiaSauMotCoGai.png"),
-                              label: 'Phia sau mot co gai',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            SongCard(
-                              image: AssetImage("assets/MatTroiCuaEm.jpg"),
-                              label: 'Phia sau mot co gai',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            SongCard(
-                              image: AssetImage(
-                                  "assets/SomethingJustLikeThis.png"),
-                              label: 'Phia sau mot co gai',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            SongCard(
-                              image: AssetImage(
-                                  "assets/YeuAnhDiMeAnhBanBanhMi.jpg"),
-                              label: 'Phia sau mot co gai',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AlbumView(
-                                      image:
-                                          AssetImage("assets/Photograph.jpg"),
-                                      song: {},
-                                      playlists: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  )
-                ],
-              )),
+            ),
+          ),
+          Positioned(
+            bottom: 16.0,
+            left: 16.0,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+              ),
+              child: const Text(
+                'Play',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           ),
         ],
       ),
     );
   }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 18.0,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHorizontalListView(String type) {
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: db.getSongs(type),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('No data available'));
+        }
+
+        var items = snapshot.data!;
+
+        return SizedBox(
+          height: 200,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              var item = items[index];
+              return _buildListItem(item);
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildListItem(Map<String, dynamic> item) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AlbumView(
+              image: AssetImage(item['image']),
+              title: item['title'] ?? 'Unknown',
+              artist: item['artist'] ?? 'Unknown Artist',
+              song: item,
+              playlists: [],
+            ),
+          ),
+        );
+      },
+      child: Container(
+        width: 150,
+        margin: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Flexible(
+              child: Container(
+                height: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16.0),
+                  image: DecorationImage(
+                    image: AssetImage(item['image']),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8.0),
+            SizedBox(
+              height: 40, // Set a fixed height for the title
+              child: Text(
+                item['title'] ?? 'Unknown',
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(const MaterialApp(
+    home: HomeView(),
+  ));
 }

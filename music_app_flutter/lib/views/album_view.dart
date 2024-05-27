@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:music_app_flutter/views/library.dart';
+import 'package:music_app_flutter/logic/mysql.dart';
 import 'package:music_app_flutter/widgets/PlaylistUtils.dart';
 import 'package:music_app_flutter/widgets/album_cards.dart';
 
 class AlbumView extends StatefulWidget {
   final ImageProvider image;
+  final String title;
+  final String artist;
   final Map<String, dynamic> song;
   final List<String> playlists;
 
-  const AlbumView(
-      {Key? key,
-      required this.image,
-      required this.song,
-      required this.playlists})
-      : super(key: key);
+  const AlbumView({
+    Key? key,
+    required this.image,
+    required this.title,
+    required this.artist,
+    required this.song,
+    required this.playlists,
+  }) : super(key: key);
 
   @override
   _AlbumViewState createState() => _AlbumViewState();
 }
 
 class _AlbumViewState extends State<AlbumView> {
+  final Mysql db = Mysql();
   late ScrollController scrollController;
   double imageSize = 0;
   double initialSize = 240;
@@ -27,6 +32,7 @@ class _AlbumViewState extends State<AlbumView> {
   double containerinitalHeight = 500;
   double imageOpacity = 1;
   bool showTopBar = false;
+  List<Map<String, dynamic>> randomSongs = [];
 
   @override
   void initState() {
@@ -50,7 +56,15 @@ class _AlbumViewState extends State<AlbumView> {
         print(scrollController.offset);
         setState(() {});
       });
+    _fetchRandomSongs();
     super.initState();
+  }
+
+  Future<void> _fetchRandomSongs() async {
+    final List<Map<String, dynamic>> songs = await db.getSongs('suggested');
+    setState(() {
+      randomSongs = songs;
+    });
   }
 
   @override
@@ -126,10 +140,15 @@ class _AlbumViewState extends State<AlbumView> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Center(
-                                  child: Text("Đánh đổi - OBITO",
+                                  child: Text(widget.title,
                                       style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold)),
+                                ),
+                                Center(
+                                  child: Text(widget.artist,
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.grey)),
                                 ),
                                 SizedBox(height: 8),
                                 Text(
@@ -148,7 +167,7 @@ class _AlbumViewState extends State<AlbumView> {
                                             PlaylistUtils.choosePlaylist(
                                                 context,
                                                 widget.song,
-                                                playlists);
+                                                widget.playlists);
                                           },
                                         ),
                                         SizedBox(width: 16),
@@ -182,65 +201,41 @@ class _AlbumViewState extends State<AlbumView> {
                           "You might also like",
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              AlbumCard(
-                                size: cardSize,
-                                label: "Photograph",
-                                image: AssetImage("assets/Photograph.jpg"),
-                                onTap: () {},
-                              ),
-                              AlbumCard(
-                                size: cardSize,
-                                label: "Lạc Trôi",
-                                image: AssetImage("assets/LacTroi.jpg"),
-                                onTap: () {},
-                              ),
-                            ],
+                        SizedBox(height: 16),
+                        GridView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            // mainAxisSpacing: 2,
+                            crossAxisSpacing: 16,
+                            childAspectRatio: 0.75,
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              AlbumCard(
-                                size: cardSize,
-                                label: "Missing You",
-                                image: AssetImage("assets/MissingYou.jpg"),
-                                onTap: () {},
-                              ),
-                              AlbumCard(
-                                size: cardSize,
-                                label: "Shape of You",
-                                image: AssetImage("assets/ShapeOfYou.jpg"),
-                                onTap: () {},
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              AlbumCard(
-                                size: cardSize,
-                                label: "Sau Tất Cả",
-                                image: AssetImage("assets/SauTatCa.jpg"),
-                                onTap: () {},
-                              ),
-                              AlbumCard(
-                                size: cardSize,
-                                label: "Perfect",
-                                image: AssetImage("assets/Perfect.jpg"),
-                                onTap: () {},
-                              ),
-                            ],
-                          ),
+                          itemCount: randomSongs.length,
+                          itemBuilder: (context, index) {
+                            final song = randomSongs[index];
+                            return AlbumCard(
+                              size: cardSize,
+                              label: song['title'],
+                              image: AssetImage(song['image']),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AlbumView(
+                                      image: AssetImage(song['image']),
+                                      title: song['title'],
+                                      artist: song['artist'],
+                                      song: song,
+                                      playlists: widget
+                                          .playlists, // Đảm bảo playlists được chuyển đúng cách
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
                         ),
                       ],
                     ),

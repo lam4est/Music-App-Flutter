@@ -61,6 +61,38 @@ class Mysql {
     }
   }
 
+  // GET SONGS FROM DATABASE
+  Future<List<Map<String, dynamic>>> getSongs(String type) async {
+    var conn = await getConnection();
+    try {
+      var query = '';
+      switch (type) {
+        case 'suggested':
+          query = 'SELECT * FROM songs ORDER BY RAND() LIMIT 10';
+          break;
+        case 'new_playlists':
+          query = 'SELECT * FROM songs ORDER BY RAND() LIMIT 10';
+          break;
+        case 'featured_albums':
+          query = 'SELECT * FROM songs ORDER BY RAND() LIMIT 10';
+          break;
+        case 'favorite_songs':
+          query = 'SELECT * FROM songs ORDER BY RAND() LIMIT 10';
+          break;
+        case 'top_charts':
+          query = 'SELECT * FROM songs ORDER BY RAND() LIMIT 10';
+          break;
+      }
+      var results = await conn.query(query);
+      return results.map((row) => row.fields).toList();
+    } catch (e) {
+      print('Failed to get songs: $e');
+      return [];
+    } finally {
+      await conn.close();
+    }
+  }
+
   // SEARCH SONG
   Future<List<Map<String, dynamic>>> searchSongs(String keyword) async {
     var conn = await getConnection();
@@ -79,21 +111,21 @@ class Mysql {
   }
 
   // GET RANDOM SONG
-  Future<List<Map<String, dynamic>>> getRandomSongs(int count) async {
-    var conn = await getConnection();
-    try {
-      var results = await conn.query(
-        'SELECT * FROM songs ORDER BY RAND() LIMIT ?',
-        [count],
-      );
-      return results.map((row) => row.fields).toList();
-    } catch (e) {
-      print('Failed to get random songs: $e');
-      return [];
-    } finally {
-      await conn.close();
-    }
-  }
+  // Future<List<Map<String, dynamic>>> getRandomSongs(int count) async {
+  //   var conn = await getConnection();
+  //   try {
+  //     var results = await conn.query(
+  //       'SELECT * FROM songs ORDER BY RAND() LIMIT ?',
+  //       [count],
+  //     );
+  //     return results.map((row) => row.fields).toList();
+  //   } catch (e) {
+  //     print('Failed to get random songs: $e');
+  //     return [];
+  //   } finally {
+  //     await conn.close();
+  //   }
+  // }
 }
 
 void main() async {
