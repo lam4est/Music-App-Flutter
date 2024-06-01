@@ -49,7 +49,7 @@ INSERT INTO `songs` (`id`, `title`, `user_id`, `artist`, `image`, `file`, `categ
 (1, 'Âm thầm bên em ', 1, 'Sơn Tùng MTP', 'assets/AmThamBenEm.jpg', 'assets/AmThamBenEm.mp3', 1, '2022-12-01 11:03:04', 13, 'am-tham-ben-em', 0),
 (2, 'Anh Là Ngoại Lệ Của Em', 1, 'Phương Ly', 'assets/AnhLaNgoaiLeCuaEm.jpg', 'assets/AnhLaNgoaiLeCuaEm.mp3', 1, '2022-09-11 12:32:17', 241, 'anh-la-ngoai-le-cua-em', 0),
 (3, 'Attention', 1, 'Charlie Puth', 'assets/Attention.png', 'assets/Attention.mp3', 1, '2022-09-11 12:30:34', 168, 'attention', 0),
-(4, 'Baby', 1, 'Justin Bieber', 'assets/Baby.jpg', 'assets/Baby.mp3', 1, '2022-09-11 12:30:34', 335, 'baby', 0),
+(4, 'Baby', 1, 'Justin Bieber', 'assets/Baby.mp3', 'assets/Baby.mp3', 1, '2022-09-11 12:30:34', 335, 'baby', 0),
 (5, 'Bigcityboi', 1, 'Binz', 'assets/Bigcityboi.jpg', 'assets/Bigcityboi.mp3', 2, '2022-09-11 12:30:34', 333, 'bigcityboi', 0),
 (6, 'Bước Qua Mùa Cô Đơn', 1, 'Vũ', 'assets/BuocQuaMuaCoDon.jpg', 'assets/BuocQuaMuaCoDon.mp3', 1, '2022-09-11 12:30:34', 132, 'buoc-qua-mua-co-don', 0),
 (7, 'Bước Qua Nhau', 1, 'Vũ', 'assets/BuocQuaNhau.jpg', 'assets/BuocQuaNhau.mp3', 1, '2022-09-11 12:30:34', 114, 'buoc-qua-nhau', 0),

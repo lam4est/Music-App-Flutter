@@ -62,6 +62,7 @@ class Mysql {
   }
 
   // GET SONGS FROM DATABASE
+// GET SONGS FROM DATABASE
   Future<List<Map<String, dynamic>>> getSongs(String type) async {
     var conn = await getConnection();
     try {
@@ -84,7 +85,12 @@ class Mysql {
           break;
       }
       var results = await conn.query(query);
-      return results.map((row) => row.fields).toList();
+      return results.map((row) {
+        var fields = row.fields;
+        // Lấy URL của bài hát từ trường 'file'
+        fields['audioUrl'] = fields['file'];
+        return fields;
+      }).toList();
     } catch (e) {
       print('Failed to get songs: $e');
       return [];

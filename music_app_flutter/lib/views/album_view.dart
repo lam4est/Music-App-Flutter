@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:music_app_flutter/logic/mysql.dart';
+import 'package:music_app_flutter/logic/mysql.dart';// Đảm bảo import đúng tệp tin
+import 'package:music_app_flutter/views/library.dart';
+import 'package:music_app_flutter/views/song_running_view.dart';
 import 'package:music_app_flutter/widgets/PlaylistUtils.dart';
 import 'package:music_app_flutter/widgets/album_cards.dart';
 
@@ -33,10 +35,12 @@ class _AlbumViewState extends State<AlbumView> {
   double imageOpacity = 1;
   bool showTopBar = false;
   List<Map<String, dynamic>> randomSongs = [];
+  Map<String, dynamic> song = {};
 
   @override
   void initState() {
     imageSize = initialSize;
+    song = widget.song;
     scrollController = ScrollController()
       ..addListener(() {
         imageSize = initialSize - scrollController.offset;
@@ -166,7 +170,7 @@ class _AlbumViewState extends State<AlbumView> {
                                           onPressed: () {
                                             PlaylistUtils.choosePlaylist(
                                                 context,
-                                                widget.song,
+                                                song,
                                                 widget.playlists);
                                           },
                                         ),
@@ -176,6 +180,35 @@ class _AlbumViewState extends State<AlbumView> {
                                           onPressed: () {
                                             // Thêm logic xử lý khi nút được nhấn
                                           },
+                                        ),
+                                        Spacer(), // Widget Spacer để điền vào tất cả không gian trống còn lại
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color.fromRGBO(238, 238, 238,
+                                                1.0), // Màu của hình tròn bao quanh
+                                          ),
+                                          child: IconButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SongRunView(
+                                                    title: widget.title,
+                                                    artist: widget.artist,
+                                                    image: widget.image,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            icon: Icon(
+                                              Icons.play_arrow,
+                                              color: Color.fromRGBO(
+                                                  0, 173, 181, 1.0),
+                                              size: 35,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     )
@@ -246,12 +279,11 @@ class _AlbumViewState extends State<AlbumView> {
           ),
           // App bar
           Positioned(
-              child: Container(
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 250),
+            child: Container(
               color: showTopBar
-                  ? Color.fromRGBO(0, 173, 181, 1.0).withOpacity(1)
-                  : Color.fromRGBO(0, 173, 181, 1.0).withOpacity(0),
+                  ? Color.fromRGBO(0, 173, 181, 1.0)
+                  : Colors
+                      .transparent, // Thay đổi màu nền hoặc làm trong suốt dựa vào giá trị của showTopBar
               padding: EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 8,
@@ -280,53 +312,19 @@ class _AlbumViewState extends State<AlbumView> {
                         duration: Duration(milliseconds: 250),
                         opacity: showTopBar ? 1 : 0,
                         child: Text(
-                          "Music Library",
-                          style: Theme.of(context).textTheme.titleLarge,
+                          song['title'],
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                      Positioned(
-                        right: 0,
-                        bottom:
-                            130 - containerHeight.clamp(165.0, double.infinity),
-                        child: Stack(
-                          alignment: Alignment.bottomRight,
-                          children: [
-                            Container(
-                              width: 64,
-                              height: 64,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color.fromRGBO(238, 238, 238, 1.0),
-                              ),
-                              child: Icon(
-                                Icons.play_arrow,
-                                size: 38,
-                                color: Color.fromRGBO(0, 173, 181, 1.0),
-                              ),
-                            ),
-                            Container(
-                              width: 24,
-                              height: 24,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color.fromRGBO(0, 173, 181, 1.0),
-                              ),
-                              child: Icon(
-                                Icons.shuffle,
-                                color: Color.fromRGBO(238, 238, 238, 1.0),
-                                size: 14,
-                              ),
-                            )
-                          ],
-                        ),
-                      )
                     ],
                   ),
                 ),
               ),
             ),
-          ))
+          )
         ],
       ),
     );
