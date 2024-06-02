@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:music_app_flutter/logic/mysql.dart';// Đảm bảo import đúng tệp tin
-import 'package:music_app_flutter/views/library.dart';
+import 'package:music_app_flutter/logic/mysql.dart'; // Đảm bảo import đúng tệp tin
+
 import 'package:music_app_flutter/views/song_running_view.dart';
 import 'package:music_app_flutter/widgets/PlaylistUtils.dart';
 import 'package:music_app_flutter/widgets/album_cards.dart';
@@ -198,6 +198,8 @@ class _AlbumViewState extends State<AlbumView> {
                                                     title: widget.title,
                                                     artist: widget.artist,
                                                     image: widget.image,
+                                                    songUrl:
+                                                        widget.song['file'],
                                                   ),
                                                 ),
                                               );

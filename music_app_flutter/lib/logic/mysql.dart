@@ -62,7 +62,6 @@ class Mysql {
   }
 
   // GET SONGS FROM DATABASE
-// GET SONGS FROM DATABASE
   Future<List<Map<String, dynamic>>> getSongs(String type) async {
     var conn = await getConnection();
     try {
@@ -87,7 +86,6 @@ class Mysql {
       var results = await conn.query(query);
       return results.map((row) {
         var fields = row.fields;
-        // Lấy URL của bài hát từ trường 'file'
         fields['audioUrl'] = fields['file'];
         return fields;
       }).toList();
@@ -115,23 +113,6 @@ class Mysql {
       await conn.close();
     }
   }
-
-  // GET RANDOM SONG
-  // Future<List<Map<String, dynamic>>> getRandomSongs(int count) async {
-  //   var conn = await getConnection();
-  //   try {
-  //     var results = await conn.query(
-  //       'SELECT * FROM songs ORDER BY RAND() LIMIT ?',
-  //       [count],
-  //     );
-  //     return results.map((row) => row.fields).toList();
-  //   } catch (e) {
-  //     print('Failed to get random songs: $e');
-  //     return [];
-  //   } finally {
-  //     await conn.close();
-  //   }
-  // }
 }
 
 void main() async {
