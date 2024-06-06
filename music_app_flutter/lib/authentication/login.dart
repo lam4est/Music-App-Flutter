@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_app_flutter/authentication/forgot_password.dart';
 import 'package:music_app_flutter/authentication/signup.dart';
 import 'package:music_app_flutter/logic/mysql.dart';
 import 'package:music_app_flutter/main.dart';
@@ -162,7 +163,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
 
-                  // Sign up button
+                  SizedBox(
+                    height: 22,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -181,6 +184,26 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: const Text(
                           "SIGN UP",
+                          style: TextStyle(
+                              color: Color.fromRGBO(0, 173, 181, 1.0)),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ForgotPassword()));
+                        },
+                        child: const Text(
+                          "Forgot Password",
                           style: TextStyle(
                               color: Color.fromRGBO(0, 173, 181, 1.0)),
                         ),

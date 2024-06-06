@@ -3,7 +3,6 @@ import 'package:mysql1/mysql1.dart';
 class Mysql {
   static String host = '10.0.2.2',
       user = 'root',
-      // password = '',
       db = 'music_db';
   static int port = 3306;
 
@@ -113,6 +112,8 @@ class Mysql {
       await conn.close();
     }
   }
+
+  closeConnection() {}
 }
 
 void main() async {
@@ -120,7 +121,7 @@ void main() async {
   try {
     var conn = await db.getConnection();
     print('Kết nối thành công!');
-    await conn.close(); // Đóng kết nối sau khi sử dụng xong
+    await conn.close();
   } catch (e) {
     print('Kết nối thất bại: $e');
   }

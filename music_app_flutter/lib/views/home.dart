@@ -31,27 +31,27 @@ class _HomeViewState extends State<HomeView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildBanner(),
-            _buildSectionTitle('Được Đề Xuất Cho Bạn'),
+            _buildSectionTitle('Recommended Stations'),
             _buildHorizontalListView('suggested'),
             SizedBox(
               height: 10,
             ),
-            _buildSectionTitle('Danh Sách Phát Mới'),
+            _buildSectionTitle('New Playlist'),
             _buildHorizontalListView('new_playlists'),
             SizedBox(
               height: 10,
             ),
-            _buildSectionTitle('Album Nổi Bật'),
+            _buildSectionTitle('Featured Album'),
             _buildHorizontalListView('featured_albums'),
             SizedBox(
               height: 10,
             ),
-            _buildSectionTitle('Bài Hát Yêu Thích'),
+            _buildSectionTitle('Favourite Song'),
             _buildHorizontalListView('favorite_songs'),
             SizedBox(
               height: 10,
             ),
-            _buildSectionTitle('Top Bảng Xếp Hạng'),
+            _buildSectionTitle('Top Chart'),
             _buildHorizontalListView('top_charts'),
             SizedBox(
               height: 10,

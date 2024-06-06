@@ -298,8 +298,8 @@ class _ProfileViewState extends State<ProfileView> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Xác nhận"),
-          content: Text("Bạn có chắc chắn muốn đăng xuất không?"),
+          title: Text("Log Out"),
+          content: Text("Are you sure to log out?"),
           actions: [
             TextButton(
               onPressed: () async {
@@ -308,13 +308,13 @@ class _ProfileViewState extends State<ProfileView> {
                   MaterialPageRoute(builder: (context) => const LoginScreen()),
                 );
               },
-              child: Text("Đồng ý"),
+              child: Text("Log out"),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Hủy"),
+              child: Text("Cancel"),
             ),
           ],
         );
