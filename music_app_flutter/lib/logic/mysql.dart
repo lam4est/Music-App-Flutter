@@ -80,7 +80,7 @@ class Mysql {
           query = 'SELECT * FROM songs ORDER BY RAND() LIMIT 10';
           break;
         case 'top_charts':
-          query = 'SELECT * FROM songs ORDER BY RAND() LIMIT 10';
+          query = 'SELECT * FROM songs ORDER BY views desc LIMIT 10';
           break;
       }
       var results = await conn.query(query);

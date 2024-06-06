@@ -81,8 +81,7 @@ class _ProfileViewState extends State<ProfileView> {
                         child: TextFormField(
                           controller: _nameController,
                           decoration: InputDecoration(
-                            fillColor:
-                                Color.fromRGBO(238, 238, 238, 1.0), 
+                            fillColor: Color.fromRGBO(238, 238, 238, 1.0),
                             labelText: 'Name',
                           ),
                         ),
@@ -294,10 +293,32 @@ class _ProfileViewState extends State<ProfileView> {
 
   void _logout() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(
-        'user_token'); // Hoặc xóa các khóa liên quan đến thông tin đăng nhập của bạn
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Xác nhận"),
+          content: Text("Bạn có chắc chắn muốn đăng xuất không?"),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                await prefs.remove('user_token');
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                );
+              },
+              child: Text("Đồng ý"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Hủy"),
+            ),
+          ],
+        );
+      },
     );
   }
 }

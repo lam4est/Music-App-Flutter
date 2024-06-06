@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_app_flutter/logic/mysql.dart'; // Đảm bảo import đúng tệp tin
+import 'package:music_app_flutter/views/library.dart';
 
 import 'package:music_app_flutter/views/song_running_view.dart';
 import 'package:music_app_flutter/widgets/PlaylistUtils.dart';
@@ -156,8 +157,10 @@ class _AlbumViewState extends State<AlbumView> {
                                 ),
                                 SizedBox(height: 8),
                                 Text(
-                                  "1,888,132 likes",
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  "${song['views']} views",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
                                 ),
                                 SizedBox(height: 8),
                                 Stack(
@@ -169,24 +172,22 @@ class _AlbumViewState extends State<AlbumView> {
                                           icon: Icon(Icons.favorite),
                                           onPressed: () {
                                             PlaylistUtils.choosePlaylist(
-                                                context,
-                                                song,
-                                                widget.playlists);
+                                                context, song, playlists);
                                           },
+                                          iconSize: 30,
                                         ),
                                         SizedBox(width: 16),
                                         IconButton(
                                           icon: Icon(Icons.more_horiz),
-                                          onPressed: () {
-                                            // Thêm logic xử lý khi nút được nhấn
-                                          },
+                                          onPressed: () {},
+                                          iconSize: 30,
                                         ),
                                         Spacer(), // Widget Spacer để điền vào tất cả không gian trống còn lại
                                         Container(
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            color: Color.fromRGBO(238, 238, 238,
-                                                1.0), // Màu của hình tròn bao quanh
+                                            color: Color.fromRGBO(
+                                                238, 238, 238, 1.0),
                                           ),
                                           child: IconButton(
                                             onPressed: () {
@@ -208,7 +209,7 @@ class _AlbumViewState extends State<AlbumView> {
                                               Icons.play_arrow,
                                               color: Color.fromRGBO(
                                                   0, 173, 181, 1.0),
-                                              size: 35,
+                                              size: 45,
                                             ),
                                           ),
                                         ),
@@ -230,8 +231,10 @@ class _AlbumViewState extends State<AlbumView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"),
-                        SizedBox(height: 32),
+                          "${song['description']}",
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        SizedBox(height: 16),
                         Text(
                           "You might also like",
                           style: Theme.of(context).textTheme.titleLarge,
@@ -284,8 +287,7 @@ class _AlbumViewState extends State<AlbumView> {
             child: Container(
               color: showTopBar
                   ? Color.fromRGBO(0, 173, 181, 1.0)
-                  : Colors
-                      .transparent, // Thay đổi màu nền hoặc làm trong suốt dựa vào giá trị của showTopBar
+                  : Colors.transparent,
               padding: EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 8,

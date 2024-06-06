@@ -16,19 +16,12 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text('XYZ Music', style: TextStyle(color: Colors.white)),
+        backgroundColor: Color.fromRGBO(0, 173, 181, 1.0),
+        title: const Text('JoySong', style: TextStyle(color: Colors.white)),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.notifications, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.account_circle, color: Colors.white),
+            icon: const Icon(Icons.settings,
+                color: Color.fromRGBO(238, 238, 238, 1.0)),
             onPressed: () {},
           ),
         ],
@@ -79,22 +72,8 @@ class _HomeViewState extends State<HomeView> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16.0),
               image: const DecorationImage(
-                image: NetworkImage('https://via.placeholder.com/800x400'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 16.0,
-            left: 16.0,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-              ),
-              child: const Text(
-                'Play',
-                style: TextStyle(color: Colors.black),
+                image: AssetImage('assets/DungLamTraiTimAnhDau_Banner.png'),
+                fit: BoxFit.fill,
               ),
             ),
           ),
