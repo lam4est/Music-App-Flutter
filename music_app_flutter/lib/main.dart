@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:music_app_flutter/authentication/login.dart';
-import 'package:music_app_flutter/logic/mysql.dart';
 import 'package:music_app_flutter/navigations/tabbar.dart';
 import 'package:music_app_flutter/widgets/SongProvider.dart';
 import 'package:music_app_flutter/widgets/music_player.dart';
@@ -74,7 +73,7 @@ class MyAppLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var db = new Mysql();
+    // var db = new Mysql();
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

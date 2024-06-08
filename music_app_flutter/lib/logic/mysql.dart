@@ -113,6 +113,23 @@ class Mysql {
     }
   }
 
+  // RESET PASSWORD
+    Future<bool> resetPassword(String email, String newPassword) async {
+    var conn = await getConnection();
+    try {
+      var result = await conn.query(
+        'UPDATE users SET password = ? WHERE email = ?',
+        [newPassword, email],
+      );
+      return result.affectedRows! > 0;
+    } catch (e) {
+      print('Failed to reset password: $e');
+      return false;
+    } finally {
+      await conn.close();
+    }
+  }
+
   closeConnection() {}
 }
 
