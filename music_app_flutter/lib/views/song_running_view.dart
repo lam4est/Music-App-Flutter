@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:music_app_flutter/logic/mysql.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class SongRunView extends StatefulWidget {
@@ -9,6 +10,7 @@ class SongRunView extends StatefulWidget {
   final String artist;
   final ImageProvider image;
   final String songUrl;
+  final int songID;
 
   const SongRunView({
     Key? key,
@@ -16,6 +18,7 @@ class SongRunView extends StatefulWidget {
     required this.artist,
     required this.image,
     required this.songUrl,
+    required this.songID,
   }) : super(key: key);
 
   @override
@@ -25,6 +28,7 @@ class SongRunView extends StatefulWidget {
 Map<String, dynamic> song = {};
 
 class _SongRunViewState extends State<SongRunView> {
+  final Mysql db = Mysql();
   Color backgroundColor = Colors.black;
   final audioPlayer = AudioPlayer();
   bool isPlaying = false;
@@ -84,16 +88,105 @@ class _SongRunViewState extends State<SongRunView> {
       await audioPlayer.pause();
     } else {
       await audioPlayer.setSourceAsset(widget.songUrl);
+      print(widget.songID);
       await audioPlayer.resume();
     }
   }
 
-  void _previousSong() {
-    // Implement your logic to play the previous song
+  void _previousSong() async {
+    if (widget.songID > 1) {
+      var previousSongID = widget.songID - 1;
+      var previousSong = await db.getSongById(previousSongID);
+
+      if (previousSong != null) {
+        var newImage =
+            AssetImage(previousSong['image']); // Assuming the image is a URL
+
+        // Stop the current song
+        await audioPlayer.stop();
+
+        // Navigate to the new SongRunView with the updated song details
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SongRunView(
+              title: previousSong['title'],
+              artist: previousSong['artist'],
+              image: newImage,
+              songUrl: previousSong['audioUrl'],
+              songID: previousSongID,
+            ),
+          ),
+        );
+
+        String songUrl = previousSong['audioUrl'];
+
+        // Check if the URL is valid and accessible
+        if (songUrl.startsWith('http') || songUrl.startsWith('https')) {
+          await audioPlayer.setSourceUrl(songUrl);
+        } else {
+          await audioPlayer.setSourceAsset(songUrl);
+        }
+
+        await audioPlayer.resume();
+      } else {
+        print('Previous song not found.');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Previous song not found.')),
+        );
+      }
+    } else {
+      print('This is the first song.');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('This is the first song.')),
+      );
+    }
   }
 
-  void _nextSong() {
-    // Implement your logic to play the next song
+  void _nextSong() async {
+    var nextSongID = widget.songID + 1;
+    var nextSong = await db.getSongById(nextSongID);
+
+    if (nextSong != null) {
+      var newImage =
+          AssetImage(nextSong['image']); // Assuming the image is a URL
+
+      // Stop the current song
+      await audioPlayer.stop();
+
+      // Navigate to the new SongRunView with the updated song details
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SongRunView(
+            title: nextSong['title'],
+            artist: nextSong['artist'],
+            image: newImage,
+            songUrl: nextSong['audioUrl'],
+            songID: nextSongID,
+          ),
+        ),
+      );
+
+      // Play the next song
+      String songUrl = nextSong['audioUrl'];
+
+      // Check if the URL is valid and accessible
+      if (songUrl.startsWith('http') || songUrl.startsWith('https')) {
+        await audioPlayer.setSourceUrl(songUrl);
+      } else {
+        // Handle local assets if necessary
+        await audioPlayer.setSourceAsset(songUrl);
+      }
+
+      await audioPlayer.resume();
+    } else {
+      print('Next song not found.');
+      // Optionally show a message to the user
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Next song not found.')),
+      );
+    }
   }
 
   String formatTime(Duration duration) {

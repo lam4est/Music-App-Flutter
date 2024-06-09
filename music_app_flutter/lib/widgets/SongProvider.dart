@@ -11,4 +11,3 @@ class SongProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
-

@@ -1,9 +1,7 @@
 import 'package:mysql1/mysql1.dart';
 
 class Mysql {
-  static String host = '10.0.2.2',
-      user = 'root',
-      db = 'music_db';
+  static String host = '10.0.2.2', user = 'root', db = 'music_db';
   static int port = 3306;
 
   Mysql();
@@ -96,6 +94,24 @@ class Mysql {
     }
   }
 
+  Future<Map<String, dynamic>?> getSongById(int id) async {
+    var conn = await getConnection();
+    try {
+      var results = await conn.query('SELECT * FROM songs WHERE id = ?', [id]);
+      if (results.isNotEmpty) {
+        var fields = results.first.fields;
+        fields['audioUrl'] = fields['file'];
+        return fields;
+      }
+      return null;
+    } catch (e) {
+      print('Failed to get song by ID: $e');
+      return null;
+    } finally {
+      await conn.close();
+    }
+  }
+
   // SEARCH SONG
   Future<List<Map<String, dynamic>>> searchSongs(String keyword) async {
     var conn = await getConnection();
@@ -114,7 +130,7 @@ class Mysql {
   }
 
   // RESET PASSWORD
-    Future<bool> resetPassword(String email, String newPassword) async {
+  Future<bool> resetPassword(String email, String newPassword) async {
     var conn = await getConnection();
     try {
       var result = await conn.query(

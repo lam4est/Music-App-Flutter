@@ -201,6 +201,7 @@ class _AlbumViewState extends State<AlbumView> {
                                                     image: widget.image,
                                                     songUrl:
                                                         widget.song['file'],
+                                                    songID: widget.song['id'],
                                                   ),
                                                 ),
                                               );

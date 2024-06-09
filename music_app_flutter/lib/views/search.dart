@@ -116,20 +116,22 @@ class SearchResult extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              icon: Icon(Icons.favorite, color: Color.fromRGBO(238, 238, 238,1.0)),
+              icon: Icon(Icons.favorite,
+                  color: Color.fromRGBO(238, 238, 238, 1.0)),
               onPressed: () {
                 PlaylistUtils.choosePlaylist(context, song, playlists);
               },
             ),
             IconButton(
-              icon:
-                  Icon(Icons.play_arrow, color: Color.fromRGBO(238, 238, 238,1.0)), 
+              icon: Icon(Icons.play_arrow,
+                  color: Color.fromRGBO(238, 238, 238, 1.0)),
               onPressed: () {
                 final selectedSong = Song(
                   title: song['title'],
                   artist: song['artist'],
                   image: song['image'],
                   views: song['views'],
+                  songUrl: song['file'],
                 );
                 context.read<SongProvider>().playSong(selectedSong);
               },

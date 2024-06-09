@@ -1,86 +1,162 @@
-  import 'package:flutter/material.dart';
-  import 'package:music_app_flutter/widgets/SongProvider.dart';
-  import 'package:provider/provider.dart';
+import 'dart:async';
 
-  class MusicPlayerWidget extends StatelessWidget {
-    @override
-    Widget build(BuildContext context) {
-      final currentSong = context.watch<SongProvider>().currentSong;
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
+import 'package:music_app_flutter/widgets/SongProvider.dart';
+import 'package:provider/provider.dart';
 
-      if (currentSong == null) {
-        return SizedBox.shrink(); // Don't display anything if no song is playing
+class MusicPlayerWidget extends StatefulWidget {
+  @override
+  _MusicPlayerWidgetState createState() => _MusicPlayerWidgetState();
+}
+
+class _MusicPlayerWidgetState extends State<MusicPlayerWidget> {
+  final audioPlayer = AudioPlayer();
+  bool isPlaying = false;
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
+
+  late StreamSubscription<PlayerState> _playerStateSubscription;
+  late StreamSubscription<Duration> _durationSubscription;
+  late StreamSubscription<Duration> _positionSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupAudioPlayer();
+  }
+
+  @override
+  void dispose() {
+    _playerStateSubscription.cancel();
+    _durationSubscription.cancel();
+    _positionSubscription.cancel();
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  void _setupAudioPlayer() {
+    _playerStateSubscription = audioPlayer.onPlayerStateChanged.listen((state) {
+      setState(() {
+        isPlaying = state == PlayerState.playing;
+      });
+    });
+
+    _durationSubscription = audioPlayer.onDurationChanged.listen((newDuration) {
+      setState(() {
+        duration = newDuration;
+      });
+    });
+
+    _positionSubscription = audioPlayer.onPositionChanged.listen((newPosition) {
+      setState(() {
+        position = newPosition;
+      });
+    });
+  }
+
+  void _playPause() async {
+    if (isPlaying) {
+      await audioPlayer.pause();
+    } else {
+      final currentSong = context.read<SongProvider>().currentSong;
+      if (currentSong != null) {
+        await audioPlayer.setSourceAsset(currentSong.songUrl);
+        await audioPlayer.resume();
       }
-
-      return Container(
-        color: Colors.black,
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        height: 80.0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            // Album art
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: Image.asset(
-                currentSong.image,
-                height: 50.0,
-                width: 50.0,
-                fit: BoxFit.cover,
-              ),
-            ),
-            // Song details and progress
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      currentSong.title,
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      currentSong.artist,
-                      style: TextStyle(color: Colors.white70),
-                    ),
-                    SizedBox(height: 4.0),
-                    LinearProgressIndicator(
-                      value: 0.5, // Example progress value
-                      backgroundColor: Colors.white24,
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(Colors.greenAccent),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // Playback controls
-            Row(
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.skip_previous, color: Colors.white),
-                  onPressed: () {
-                    // Previous song functionality
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.play_arrow, color: Colors.white),
-                  onPressed: () {
-                    // Play/pause functionality
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.skip_next, color: Colors.white),
-                  onPressed: () {
-                    // Next song functionality
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
     }
   }
+
+  void _previousSong() {
+    // Thực hiện logic phát bài hát trước
+  }
+
+  void _nextSong() {
+    // Thực hiện logic phát bài hát tiếp theo
+  }
+
+  String formatTime(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    return '$minutes:$seconds';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final currentSong = context.watch<SongProvider>().currentSong;
+
+    if (currentSong == null) {
+      return SizedBox
+          .shrink(); // Không hiển thị gì nếu không có bài hát nào đang phát
+    }
+
+    return Container(
+      color: Colors.black,
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      height: 80.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          // Ảnh album
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.0),
+            child: Image.asset(
+              currentSong.image,
+              height: 50.0,
+              width: 50.0,
+              fit: BoxFit.cover,
+            ),
+          ),
+          // Chi tiết bài hát và tiến độ
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    currentSong.title,
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    currentSong.artist,
+                    style: TextStyle(color: Colors.white70),
+                  ),
+                  SizedBox(height: 4.0),
+                  LinearProgressIndicator(
+                    value: duration.inSeconds > 0
+                        ? position.inSeconds / duration.inSeconds
+                        : 0.0,
+                    backgroundColor: Colors.white24,
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Colors.greenAccent),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Row(
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.skip_previous, color: Colors.white),
+                onPressed: _previousSong,
+              ),
+              IconButton(
+                icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow,
+                    color: Colors.white),
+                onPressed: _playPause,
+              ),
+              IconButton(
+                icon: Icon(Icons.skip_next, color: Colors.white),
+                onPressed: _nextSong,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
