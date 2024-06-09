@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:music_app_flutter/views/song_running_view.dart';
 import 'package:music_app_flutter/widgets/SongProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -67,12 +68,22 @@ class _MusicPlayerWidgetState extends State<MusicPlayerWidget> {
     }
   }
 
-  void _previousSong() {
-    // Thực hiện logic phát bài hát trước
-  }
-
-  void _nextSong() {
-    // Thực hiện logic phát bài hát tiếp theo
+  void _openSongRunView(BuildContext context) {
+    final currentSong = context.read<SongProvider>().currentSong;
+    if (currentSong != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SongRunView(
+            title: currentSong.title,
+            artist: currentSong.artist,
+            image: AssetImage(currentSong.image),
+            songUrl: currentSong.songUrl,
+            songID: currentSong.songID,
+          ),
+        ),
+      );
+    }
   }
 
   String formatTime(Duration duration) {
@@ -87,75 +98,68 @@ class _MusicPlayerWidgetState extends State<MusicPlayerWidget> {
     final currentSong = context.watch<SongProvider>().currentSong;
 
     if (currentSong == null) {
-      return SizedBox
-          .shrink(); // Không hiển thị gì nếu không có bài hát nào đang phát
+      return SizedBox.shrink();
     }
 
-    return Container(
-      color: Colors.black,
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
-      height: 80.0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          // Ảnh album
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Image.asset(
-              currentSong.image,
-              height: 50.0,
-              width: 50.0,
-              fit: BoxFit.cover,
-            ),
-          ),
-          // Chi tiết bài hát và tiến độ
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    currentSong.title,
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    currentSong.artist,
-                    style: TextStyle(color: Colors.white70),
-                  ),
-                  SizedBox(height: 4.0),
-                  LinearProgressIndicator(
-                    value: duration.inSeconds > 0
-                        ? position.inSeconds / duration.inSeconds
-                        : 0.0,
-                    backgroundColor: Colors.white24,
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(Colors.greenAccent),
-                  ),
-                ],
+    return GestureDetector(
+      onTap: () {
+        _openSongRunView(context);
+      },
+      child: Container(
+        color: Colors.black,
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        height: 80.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            // Ảnh album
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.asset(
+                currentSong.image,
+                height: 50.0,
+                width: 50.0,
+                fit: BoxFit.cover,
               ),
             ),
-          ),
-          Row(
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.skip_previous, color: Colors.white),
-                onPressed: _previousSong,
+            // Chi tiết bài hát và tiến độ
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      currentSong.title,
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      currentSong.artist,
+                      style: TextStyle(color: Colors.white70),
+                    ),
+                    SizedBox(height: 4.0),
+                    LinearProgressIndicator(
+                      value: duration.inSeconds > 0
+                          ? position.inSeconds / duration.inSeconds
+                          : 0.0,
+                      backgroundColor: Colors.white24,
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Colors.greenAccent),
+                    ),
+                  ],
+                ),
               ),
-              IconButton(
-                icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow,
-                    color: Colors.white),
-                onPressed: _playPause,
-              ),
-              IconButton(
-                icon: Icon(Icons.skip_next, color: Colors.white),
-                onPressed: _nextSong,
-              ),
-            ],
-          ),
-        ],
+            ),
+            IconButton(
+              icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow,
+                  color: Colors.white),
+              onPressed: _playPause,
+              iconSize: 35,
+            ),
+          ],
+        ),
       ),
     );
   }

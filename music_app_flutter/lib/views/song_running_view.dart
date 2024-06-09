@@ -100,12 +100,9 @@ class _SongRunViewState extends State<SongRunView> {
 
       if (previousSong != null) {
         var newImage =
-            AssetImage(previousSong['image']); // Assuming the image is a URL
+            AssetImage(previousSong['image']); 
 
-        // Stop the current song
         await audioPlayer.stop();
-
-        // Navigate to the new SongRunView with the updated song details
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

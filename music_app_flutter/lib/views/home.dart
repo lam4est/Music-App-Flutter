@@ -9,8 +9,33 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView>
+    with SingleTickerProviderStateMixin {
   final Mysql db = Mysql();
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    );
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,33 +88,39 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget _buildBanner() {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      child: Stack(
-        children: [
-          Container(
-            height: 200,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16.0),
-              image: const DecorationImage(
-                image: AssetImage('assets/DungLamTraiTimAnhDau_Banner.png'),
-                fit: BoxFit.fill,
+    return FadeTransition(
+      opacity: _animation,
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        child: Stack(
+          children: [
+            Container(
+              height: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.0),
+                image: const DecorationImage(
+                  image: AssetImage('assets/DungLamTraiTimAnhDau_Banner.png'),
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 18.0,
-          fontWeight: FontWeight.bold,
+    return FadeTransition(
+      opacity: _animation,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
@@ -125,53 +156,56 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget _buildListItem(Map<String, dynamic> item) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AlbumView(
-              image: AssetImage(item['image']),
-              title: item['title'] ?? 'Unknown',
-              artist: item['artist'] ?? 'Unknown Artist',
-              song: item,
-              playlists: [],
+    return FadeTransition(
+      opacity: _animation,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AlbumView(
+                image: AssetImage(item['image']),
+                title: item['title'] ?? 'Unknown',
+                artist: item['artist'] ?? 'Unknown Artist',
+                song: item,
+                playlists: [],
+              ),
             ),
-          ),
-        );
-      },
-      child: Container(
-        width: 150,
-        margin: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Flexible(
-              child: Container(
-                height: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16.0),
-                  image: DecorationImage(
-                    image: AssetImage(item['image']),
-                    fit: BoxFit.cover,
+          );
+        },
+        child: Container(
+          width: 150,
+          margin: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                child: Container(
+                  height: 150,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.0),
+                    image: DecorationImage(
+                      image: AssetImage(item['image']),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 8.0),
-            SizedBox(
-              height: 40, // Set a fixed height for the title
-              child: Text(
-                item['title'] ?? 'Unknown',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+              const SizedBox(height: 8.0),
+              SizedBox(
+                height: 40, // Set a fixed height for the title
+                child: Text(
+                  item['title'] ?? 'Unknown',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -132,6 +132,7 @@ class SearchResult extends StatelessWidget {
                   image: song['image'],
                   views: song['views'],
                   songUrl: song['file'],
+                  songID: song['id'],
                 );
                 context.read<SongProvider>().playSong(selectedSong);
               },
