@@ -68,10 +68,10 @@ class Mysql {
           query = 'SELECT * FROM songs ORDER BY RAND() LIMIT 10';
           break;
         case 'new_playlists':
-          query = 'SELECT * FROM songs ORDER BY RAND() LIMIT 10';
+          query = 'SELECT * FROM songs ORDER BY date DESC LIMIT 10';
           break;
         case 'featured_albums':
-          query = 'SELECT * FROM songs ORDER BY RAND() LIMIT 10';
+          query = 'SELECT * FROM songs ORDER BY timestamp DESC LIMIT 10';
           break;
         case 'favorite_songs':
           query = 'SELECT * FROM songs ORDER BY RAND() LIMIT 10';

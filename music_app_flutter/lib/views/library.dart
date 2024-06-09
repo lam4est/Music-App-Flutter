@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -227,6 +229,8 @@ class PlaylistSongsView extends StatefulWidget {
 class _PlaylistSongsViewState extends State<PlaylistSongsView> {
   int currentIndex = 0;
   List<Map<String, dynamic>> songs = [];
+  final audioPlayer = AudioPlayer();
+  bool isPlaying = false;
 
   Future<List<Map<String, dynamic>>> _loadPlaylistSongs() async {
     final prefs = await SharedPreferences.getInstance();
@@ -269,7 +273,7 @@ class _PlaylistSongsViewState extends State<PlaylistSongsView> {
     );
   }
 
-  void _nextSong() {
+  void _nextSong() async {
     setState(() {
       if (currentIndex < songs.length - 1) {
         currentIndex++;
@@ -359,7 +363,7 @@ class _PlaylistSongsViewState extends State<PlaylistSongsView> {
   }
 }
 
-class MusicPlayer extends StatelessWidget {
+class MusicPlayer extends StatefulWidget {
   final Map<String, dynamic> song;
   final VoidCallback onNext;
   final VoidCallback onPrevious;
@@ -371,14 +375,75 @@ class MusicPlayer extends StatelessWidget {
   });
 
   @override
+  _MusicPlayerState createState() => _MusicPlayerState();
+}
+
+class _MusicPlayerState extends State<MusicPlayer> {
+  bool isPlaying = false;
+  final AudioPlayer audioPlayer = AudioPlayer();
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
+  double seekValue = 0.0;
+
+  late StreamSubscription<PlayerState> _playerStateSubscription;
+  late StreamSubscription<Duration> _durationSubscription;
+  late StreamSubscription<Duration> _positionSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupAudioPlayer();
+  }
+
+  @override
+  void dispose() {
+    _playerStateSubscription.cancel();
+    _durationSubscription.cancel();
+    _positionSubscription.cancel();
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  void _setupAudioPlayer() {
+    _playerStateSubscription = audioPlayer.onPlayerStateChanged.listen((state) {
+      setState(() {
+        isPlaying = state == PlayerState.playing;
+      });
+    });
+
+    _durationSubscription = audioPlayer.onDurationChanged.listen((newDuration) {
+      setState(() {
+        duration = newDuration;
+      });
+    });
+
+    _positionSubscription = audioPlayer.onPositionChanged.listen((newPosition) {
+      setState(() {
+        position = newPosition;
+      });
+    });
+  }
+
+  void _playPause() async {
+    if (isPlaying) {
+      await audioPlayer.pause();
+    } else {
+      if (position >= duration) {
+        await audioPlayer.setSourceAsset(widget.song['file']);
+      }
+      await audioPlayer.resume();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(8.0),
       child: Stack(
         children: [
-          song['image'] != null
+          widget.song['image'] != null
               ? Image.asset(
-                  song['image'],
+                  widget.song['image'],
                   width: double.infinity,
                   height: 200,
                   fit: BoxFit.cover,
@@ -415,9 +480,9 @@ class MusicPlayer extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(4.0),
-                  child: song['image'] != null
+                  child: widget.song['image'] != null
                       ? Image.asset(
-                          song['image'],
+                          widget.song['image'],
                           width: 60,
                           height: 60,
                           fit: BoxFit.cover,
@@ -437,7 +502,7 @@ class MusicPlayer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      song['title'] ?? '',
+                      widget.song['title'] ?? '',
                       style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
@@ -447,7 +512,7 @@ class MusicPlayer extends StatelessWidget {
                     ),
                     SizedBox(height: 4.0),
                     Text(
-                      song['artist'] ?? '',
+                      widget.song['artist'] ?? '',
                       style: TextStyle(
                           fontSize: 14.0,
                           color: Color.fromRGBO(238, 238, 238, 1.0)),
@@ -472,22 +537,39 @@ class MusicPlayer extends StatelessWidget {
                       IconButton(
                         icon: Icon(Icons.skip_previous,
                             color: Color.fromRGBO(238, 238, 238, 1.0)),
-                        onPressed: onPrevious,
+                        onPressed: () {
+                          _playPause();
+                          widget.onPrevious();
+                        },
                       ),
                       IconButton(
-                        icon: Icon(Icons.play_arrow,
-                            color: Color.fromRGBO(238, 238, 238, 1.0),
-                            size: 32),
+                        icon: Icon(
+                          isPlaying ? Icons.pause : Icons.play_arrow,
+                          color: Color.fromRGBO(238, 238, 238, 1.0),
+                          size: 32,
+                        ),
                         onPressed: () {
-                          // Play/pause logic
+                          _playPause();
                         },
                       ),
                       IconButton(
                         icon: Icon(Icons.skip_next,
                             color: Color.fromRGBO(238, 238, 238, 1.0)),
-                        onPressed: onNext,
-                      ),
+                        onPressed: () {
+                          _playPause();
+                          widget.onNext();
+                        },
+                      )
                     ],
+                  ),
+                ),
+                LinearProgressIndicator(
+                  value: duration.inMilliseconds > 0
+                      ? (position.inMilliseconds / duration.inMilliseconds)
+                      : 0.0,
+                  backgroundColor: Colors.grey,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Color.fromRGBO(0, 173, 181, 1.0),
                   ),
                 ),
               ],

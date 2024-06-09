@@ -99,8 +99,7 @@ class _SongRunViewState extends State<SongRunView> {
       var previousSong = await db.getSongById(previousSongID);
 
       if (previousSong != null) {
-        var newImage =
-            AssetImage(previousSong['image']); 
+        var newImage = AssetImage(previousSong['image']);
 
         await audioPlayer.stop();
         Navigator.pushReplacement(

@@ -66,7 +66,7 @@ class _HomeViewState extends State<HomeView>
             SizedBox(
               height: 10,
             ),
-            _buildSectionTitle('Featured Album'),
+            _buildSectionTitle('Recently Played'),
             _buildHorizontalListView('featured_albums'),
             SizedBox(
               height: 10,

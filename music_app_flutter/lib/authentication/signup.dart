@@ -19,6 +19,28 @@ class _SignUpState extends State<SignUp> {
 
   bool isVisible = false;
 
+  // Function to create slide transition route
+  Route createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          const LoginScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(-1.0, 0.0); // Slide from left to right
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,7 +173,7 @@ class _SignUpState extends State<SignUp> {
                               color: Color.fromRGBO(
                                   238, 238, 238, 1.0)), // Màu icon
                           border: InputBorder.none,
-                          hintText: "Password",
+                          hintText: "Confirm Password",
                           hintStyle: TextStyle(
                               color: Color.fromRGBO(
                                   238, 238, 238, 1.0)), // Màu chữ gợi ý
@@ -254,10 +276,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       TextButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginScreen()));
+                            Navigator.of(context).push(createRoute());
                           },
                           child: Text(
                             "Login",
