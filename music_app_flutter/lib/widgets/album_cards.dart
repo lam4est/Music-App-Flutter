@@ -20,18 +20,21 @@ class AlbumCard extends StatelessWidget {
       onTap: () {
         onTap();
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image(
-            image: image,
-            width: size,
-            height: size,
-            fit: BoxFit.cover,
-          ),
-          SizedBox(height: 10),
-          Text(label),
-        ],
+      child: Hero(
+        tag: label,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image(
+              image: image,
+              width: size,
+              height: size,
+              fit: BoxFit.cover,
+            ),
+            SizedBox(height: 10),
+            Text(label),
+          ],
+        ),
       ),
     );
   }

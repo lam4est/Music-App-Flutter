@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:music_app_flutter/logic/mysql.dart';
 import 'package:music_app_flutter/views/album_view.dart';
@@ -15,9 +17,21 @@ class _HomeViewState extends State<HomeView>
   late AnimationController _controller;
   late Animation<double> _animation;
 
+  final PageController _pageController = PageController();
+  Timer? _timer;
+  int _currentIndex = 0;
+  final List<String> _imagePaths = [
+    'assets/DungLamTraiTimAnhDau_Banner.png',
+    'assets/MotDoi_banner.jpg',
+    'assets/X_banner.jpg',
+    'assets/XuanDanGDenBenEm_banner.jpg',
+    'assets/TungLa_banner.jpg'
+  ];
+
   @override
   void initState() {
     super.initState();
+    _startTimer();
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -33,8 +47,29 @@ class _HomeViewState extends State<HomeView>
 
   @override
   void dispose() {
+    _stopTimer();
+    _pageController.dispose();
     _controller.dispose();
     super.dispose();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      _changeBanner();
+    });
+  }
+
+  void _stopTimer() {
+    _timer?.cancel();
+  }
+
+  void _changeBanner() {
+    _currentIndex = (_currentIndex + 1) % _imagePaths.length;
+    _pageController.animateToPage(
+      _currentIndex,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
@@ -59,27 +94,27 @@ class _HomeViewState extends State<HomeView>
             _buildSectionTitle('Recommended Stations'),
             _buildHorizontalListView('suggested'),
             SizedBox(
-              height: 10,
+              height: 8,
             ),
             _buildSectionTitle('New Playlist'),
             _buildHorizontalListView('new_playlists'),
             SizedBox(
-              height: 10,
+              height: 8,
             ),
             _buildSectionTitle('Recently Played'),
             _buildHorizontalListView('featured_albums'),
             SizedBox(
-              height: 10,
+              height: 8,
             ),
             _buildSectionTitle('Favourite Song'),
             _buildHorizontalListView('favorite_songs'),
             SizedBox(
-              height: 10,
+              height: 8,
             ),
             _buildSectionTitle('Top Chart'),
             _buildHorizontalListView('top_charts'),
             SizedBox(
-              height: 10,
+              height: 8,
             ),
           ],
         ),
@@ -88,23 +123,28 @@ class _HomeViewState extends State<HomeView>
   }
 
   Widget _buildBanner() {
-    return FadeTransition(
-      opacity: _animation,
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: Container(
-        padding: const EdgeInsets.all(16.0),
-        child: Stack(
-          children: [
-            Container(
-              height: 200,
+        height: 200,
+        child: PageView.builder(
+          controller: _pageController,
+          itemCount: _imagePaths.length,
+          itemBuilder: (context, index) {
+            return Container(
+              padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16.0),
-                image: const DecorationImage(
-                  image: AssetImage('assets/DungLamTraiTimAnhDau_Banner.png'),
+                image: DecorationImage(
+                  image: AssetImage(_imagePaths[index]),
                   fit: BoxFit.fill,
                 ),
               ),
-            ),
-          ],
+            );
+          },
+          onPageChanged: (index) {
+            _currentIndex = index;
+          },
         ),
       ),
     );
@@ -118,7 +158,7 @@ class _HomeViewState extends State<HomeView>
         child: Text(
           title,
           style: const TextStyle(
-            fontSize: 18.0,
+            fontSize: 22.0,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -141,7 +181,7 @@ class _HomeViewState extends State<HomeView>
         var items = snapshot.data!;
 
         return SizedBox(
-          height: 200,
+          height: 220,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: items.length,
@@ -174,14 +214,14 @@ class _HomeViewState extends State<HomeView>
           );
         },
         child: Container(
-          width: 150,
+          width: 170,
           margin: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Flexible(
                 child: Container(
-                  height: 150,
+                  height: 170,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16.0),
                     image: DecorationImage(
@@ -199,9 +239,9 @@ class _HomeViewState extends State<HomeView>
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
                 ),
               ),
             ],

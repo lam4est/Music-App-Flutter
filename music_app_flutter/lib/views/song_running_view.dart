@@ -217,6 +217,7 @@ class _SongRunViewState extends State<SongRunView> {
                     },
                   ),
                 ),
+                // Navigator.pop(context);
                 Spacer(),
                 Center(
                   child: Column(
