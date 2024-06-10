@@ -5,6 +5,8 @@ import 'package:music_app_flutter/views/library.dart';
 import 'package:music_app_flutter/widgets/PlaylistUtils.dart';
 import 'package:music_app_flutter/widgets/SongProvider.dart';
 import 'package:provider/provider.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({super.key});
@@ -16,7 +18,75 @@ class SearchView extends StatefulWidget {
 class _SearchViewState extends State<SearchView> {
   final titleController = TextEditingController();
   List<Map<String, dynamic>> songs = [];
-  bool isLoading = false;
+  bool isLoading = false; // Fixed variable name
+
+  SpeechToText _speechToText = SpeechToText();
+  bool _speechEnabled = false;
+  String _lastWords = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _initSpeech();
+  }
+
+  /// This has to happen only once per app
+  void _initSpeech() async {
+    _speechEnabled = await _speechToText.initialize(
+      onStatus: (status) {
+        print('onStatus: $status');
+        if (status == 'done') {
+          _stopListening();
+        }
+      },
+      onError: (error) {
+        print('onError: $error');
+        setState(() {
+          _speechEnabled = false;
+        });
+      },
+    );
+    if (!_speechEnabled) {
+      print('Speech recognition not enabled');
+    }
+    setState(() {});
+  }
+
+  void _startListening() async {
+    if (_speechEnabled) {
+      print('Starting to listen...');
+      await _speechToText.listen(
+        onResult: _onSpeechResult,
+        listenFor: Duration(seconds: 10), // Increase timeout duration
+        pauseFor: Duration(seconds: 5), // Adjust as necessary
+        localeId: 'vi_VN', // Set locale to Vietnamese
+        onSoundLevelChange: (level) {
+          print('Sound level: $level');
+          if (level < 1) {
+            print('Speak louder, please.');
+          }
+        },
+      );
+      setState(() {});
+    } else {
+      print('Speech recognition not enabled');
+    }
+  }
+
+  void _stopListening() async {
+    print('Stopping listening...');
+    await _speechToText.stop();
+    setState(() {});
+    searchSongs();
+  }
+
+  void _onSpeechResult(SpeechRecognitionResult result) {
+    setState(() {
+      _lastWords = result.recognizedWords;
+      titleController.text = _lastWords;
+    });
+    print('Recognized words: $_lastWords');
+  }
 
   void searchSongs() async {
     setState(() {
@@ -57,16 +127,35 @@ class _SearchViewState extends State<SearchView> {
                   borderRadius: BorderRadius.circular(25),
                   color: const Color.fromRGBO(57, 62, 70, 1.0),
                 ),
-                child: TextFormField(
-                  controller: titleController,
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.search),
-                    border: InputBorder.none,
-                    hintText: "Type something",
-                  ),
-                  onFieldSubmitted: (value) {
-                    searchSongs();
-                  },
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: titleController,
+                        decoration: InputDecoration(
+                          icon: Icon(Icons.search),
+                          border: InputBorder.none,
+                          hintText: _speechToText.isListening
+                              ? 'Listening...'
+                              : _speechEnabled
+                                  ? 'Type something'
+                                  : 'Speech not available',
+                        ),
+                        onFieldSubmitted: (value) {
+                          searchSongs();
+                        },
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(_speechToText.isNotListening
+                          ? Icons.mic_off
+                          : Icons.mic),
+                      color: Colors.white,
+                      onPressed: _speechToText.isNotListening
+                          ? _startListening
+                          : _stopListening,
+                    ),
+                  ],
                 ),
               ),
               isLoading
