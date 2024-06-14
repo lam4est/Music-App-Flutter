@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:music_app_flutter/logic/mysql.dart'; // Đảm bảo import đúng tệp tin
-import 'package:music_app_flutter/views/library.dart';
-
-import 'package:music_app_flutter/views/song_running_view.dart';
-import 'package:music_app_flutter/widgets/PlaylistUtils.dart';
-import 'package:music_app_flutter/widgets/album_cards.dart';
+import 'package:music_app_flutter/logic/mysql.dart';
+import 'package:music_app_flutter/user/views/library.dart';
+import 'package:music_app_flutter/user/views/song_running_view.dart';
+import 'package:music_app_flutter/user/widgets/PlaylistUtils.dart';
+import 'package:music_app_flutter/user/widgets/album_cards.dart'; 
 
 class AlbumView extends StatefulWidget {
   final ImageProvider image;

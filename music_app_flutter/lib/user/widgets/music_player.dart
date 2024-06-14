@@ -1,9 +1,8 @@
 import 'dart:async';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:music_app_flutter/views/song_running_view.dart';
-import 'package:music_app_flutter/widgets/SongProvider.dart';
+import 'package:music_app_flutter/user/views/song_running_view.dart';
+import 'package:music_app_flutter/user/widgets/SongProvider.dart';
 import 'package:provider/provider.dart';
 
 class MusicPlayerWidget extends StatefulWidget {

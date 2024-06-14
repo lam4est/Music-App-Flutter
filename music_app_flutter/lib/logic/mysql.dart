@@ -13,23 +13,25 @@ class Mysql {
   }
 
   // LOGIN
-  Future<bool> login(String username, String password) async {
+  Future<String?> login(String username, String password) async {
     var conn = await getConnection();
     try {
       var results = await conn.query(
-          'SELECT * FROM users WHERE username = ? AND password = ?',
+          'SELECT role FROM users WHERE username = ? AND password = ?',
           [username, password]);
 
       if (results.isNotEmpty) {
-        print('Đăng nhập thành công!');
-        return true;
+        var row = results.first;
+        String role = row['role'];
+        print('Đăng nhập thành công với vai trò: $role');
+        return role;
       } else {
         print('Đăng nhập thất bại: Sai tên đăng nhập hoặc mật khẩu.');
-        return false;
+        return null;
       }
     } catch (e) {
       print('Đăng nhập thất bại: $e');
-      return false;
+      return null;
     } finally {
       await conn.close();
     }
@@ -94,6 +96,26 @@ class Mysql {
     }
   }
 
+  // GET USER
+  Future<List<Map<String, dynamic>>> searchUser(String keyword) async {
+    var conn = await getConnection();
+    try {
+      var results = await conn.query(
+        'SELECT * FROM users WHERE username LIKE ? OR email LIKE ?',
+        ['%$keyword%', '%$keyword%'],
+      );
+      var list = results.map((row) => row.fields).toList();
+      print('Search results: $list'); // Debug
+      return list;
+    } catch (e) {
+      print('Search failed: $e');
+      return [];
+    } finally {
+      await conn.close();
+    }
+  }
+
+  // GET SONG BY ID
   Future<Map<String, dynamic>?> getSongById(int id) async {
     var conn = await getConnection();
     try {
@@ -141,6 +163,22 @@ class Mysql {
     } catch (e) {
       print('Failed to reset password: $e');
       return false;
+    } finally {
+      await conn.close();
+    }
+  }
+
+  // ACTIVE USER
+  Future<void> updateUserActivation(int userId, bool isActive) async {
+    var conn = await getConnection();
+    try {
+      await conn.query(
+        'UPDATE users SET active = ? WHERE id = ?',
+        [isActive ? 0 : 1, userId], // 0 là hoạt động, 1 là không hoạt động
+      );
+      print('Update query executed'); // Debug
+    } catch (e) {
+      print('Update failed: $e');
     } finally {
       await conn.close();
     }

@@ -1,8 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:music_app_flutter/logic/mysql.dart';
-import 'package:music_app_flutter/views/album_view.dart';
+import 'package:music_app_flutter/user/views/album_view.dart';
+
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});

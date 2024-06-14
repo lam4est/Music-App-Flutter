@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:music_app_flutter/logic/models/songs.dart';
 import 'package:music_app_flutter/logic/mysql.dart';
-import 'package:music_app_flutter/views/library.dart';
-import 'package:music_app_flutter/widgets/PlaylistUtils.dart';
-import 'package:music_app_flutter/widgets/SongProvider.dart';
+import 'package:music_app_flutter/user/views/library.dart';
+import 'package:music_app_flutter/user/widgets/PlaylistUtils.dart';
+import 'package:music_app_flutter/user/widgets/SongProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';

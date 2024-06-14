@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:music_app_flutter/views/home.dart';
-import 'package:music_app_flutter/views/library.dart';
-import 'package:music_app_flutter/views/profile.dart';
-import 'package:music_app_flutter/views/search.dart';
+import 'package:music_app_flutter/user/views/home.dart';
+import 'package:music_app_flutter/user/views/library.dart';
+import 'package:music_app_flutter/user/views/profile.dart';
+import 'package:music_app_flutter/user/views/search.dart';
 
 class Tabbar extends StatefulWidget {
   const Tabbar({super.key});

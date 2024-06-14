@@ -12,27 +12,29 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // TextEditing controllers to control the text input
   final username = TextEditingController();
   final password = TextEditingController();
-
-  // Bool variable to show and hide the password
   bool isVisible = false;
-
-  // Bool variable to show error message if login is incorrect
   bool isLoginTrue = false;
 
   // Function to handle login
   login() async {
     var db = Mysql();
-    var response = await db.login(username.text, password.text);
-    if (response == true) {
-      // If login is correct, navigate to the main app
+    var role = await db.login(username.text, password.text);
+    if (role != null) {
       if (!mounted) return;
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => MyApp()));
+      if (role == 'admin') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => AdminApp()), // Thay AdminApp bằng widget trang admin của bạn
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => UserApp()), // Thay UserApp bằng widget trang user của bạn
+        );
+      }
     } else {
-      // If login is incorrect, show the error message
       setState(() {
         isLoginTrue = true;
       });
@@ -94,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: username,
                       style: TextStyle(
                           color: Color.fromRGBO(
-                              238, 238, 238, 1.0)), // Set text color to white
+                              238, 238, 238, 1.0)), 
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Username is required";
@@ -104,12 +106,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         icon: Icon(Icons.person,
                             color: Color.fromRGBO(
-                                238, 238, 238, 1.0)), // Set icon color to white
+                                238, 238, 238, 1.0)), 
                         border: InputBorder.none,
                         hintText: "Username",
                         hintStyle: TextStyle(
                             color: Color.fromRGBO(238, 238, 238,
-                                1.0)), // Set hint text color to a lighter white
+                                1.0)), 
                       ),
                     ),
                   ),
@@ -137,12 +139,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         icon: Icon(Icons.lock,
                             color: Color.fromRGBO(
-                                238, 238, 238, 1.0)), // Set icon color to white
+                                238, 238, 238, 1.0)), 
                         border: InputBorder.none,
                         hintText: "Password",
                         hintStyle: TextStyle(
                             color: Color.fromRGBO(238, 238, 238,
-                                1.0)), // Set hint text color to a lighter white
+                                1.0)), 
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
