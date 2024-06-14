@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
               bottom: 56.0, // Height of the BottomNavigationBar
               left: 0,
               right: 0,
-              child: MusicPlayerWidget(),
+              child: MusicPlayerWidget(), 
             ),
           ],
         ),
