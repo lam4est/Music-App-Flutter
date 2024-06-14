@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:mysql1/mysql1.dart';
 
 class Mysql {
@@ -17,11 +19,18 @@ class Mysql {
     var conn = await getConnection();
     try {
       var results = await conn.query(
-          'SELECT role FROM users WHERE username = ? AND password = ?',
-          [username, password]);
+        'SELECT role, active FROM users WHERE username = ? AND password = ?',
+        [username, password],
+      );
 
       if (results.isNotEmpty) {
         var row = results.first;
+        int active = row['active'];
+        if (active == 1) {
+          print('Tài khoản đã bị vô hiệu hóa.');
+          return null; // Trả về null nếu tài khoản đã bị vô hiệu hóa
+        }
+
         String role = row['role'];
         print('Đăng nhập thành công với vai trò: $role');
         return role;
@@ -42,8 +51,8 @@ class Mysql {
     var conn = await getConnection();
     try {
       var result = await conn.query(
-          'INSERT INTO users (username, password, email) VALUES (?, ?, ?)',
-          [username, password, email]);
+          'INSERT INTO users (username, password, email, active, role) VALUES (?,?,?,?,?)',
+          [username, password, email, 0, 'user']);
 
       if (result.affectedRows! > 0) {
         print('Đăng ký thành công!');

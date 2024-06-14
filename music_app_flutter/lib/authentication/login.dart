@@ -16,28 +16,32 @@ class _LoginScreenState extends State<LoginScreen> {
   final password = TextEditingController();
   bool isVisible = false;
   bool isLoginTrue = false;
+  String? role; // Khai báo biến role ở mức độ toàn cục
 
   // Function to handle login
   login() async {
     var db = Mysql();
-    var role = await db.login(username.text, password.text);
+    var loggedInRole = await db.login(username.text, password.text);
+    setState(() {
+      if (loggedInRole != null) {
+        role = loggedInRole; // Cập nhật biến role
+      } else {
+        isLoginTrue = true;
+      }
+    });
+
     if (role != null) {
-      if (!mounted) return;
       if (role == 'admin') {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => AdminApp()), // Thay AdminApp bằng widget trang admin của bạn
+          MaterialPageRoute(builder: (context) => AdminApp()),
         );
       } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => UserApp()), // Thay UserApp bằng widget trang user của bạn
+          MaterialPageRoute(builder: (context) => UserApp()),
         );
       }
-    } else {
-      setState(() {
-        isLoginTrue = true;
-      });
     }
   }
 
@@ -94,9 +98,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: TextFormField(
                       cursorColor: Color.fromRGBO(0, 173, 181, 1.0),
                       controller: username,
-                      style: TextStyle(
-                          color: Color.fromRGBO(
-                              238, 238, 238, 1.0)), 
+                      style:
+                          TextStyle(color: Color.fromRGBO(238, 238, 238, 1.0)),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Username is required";
@@ -105,13 +108,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       decoration: InputDecoration(
                         icon: Icon(Icons.person,
-                            color: Color.fromRGBO(
-                                238, 238, 238, 1.0)), 
+                            color: Color.fromRGBO(238, 238, 238, 1.0)),
                         border: InputBorder.none,
                         hintText: "Username",
                         hintStyle: TextStyle(
-                            color: Color.fromRGBO(238, 238, 238,
-                                1.0)), 
+                            color: Color.fromRGBO(238, 238, 238, 1.0)),
                       ),
                     ),
                   ),
@@ -138,13 +139,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: !isVisible,
                       decoration: InputDecoration(
                         icon: Icon(Icons.lock,
-                            color: Color.fromRGBO(
-                                238, 238, 238, 1.0)), 
+                            color: Color.fromRGBO(238, 238, 238, 1.0)),
                         border: InputBorder.none,
                         hintText: "Password",
                         hintStyle: TextStyle(
-                            color: Color.fromRGBO(238, 238, 238,
-                                1.0)), 
+                            color: Color.fromRGBO(238, 238, 238, 1.0)),
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -235,6 +234,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   isLoginTrue
                       ? const Text(
                           "Username or password is incorrect",
+                          style: TextStyle(color: Colors.red),
+                        )
+                      : const SizedBox(),
+
+                  // Disabled account message
+                  isLoginTrue && role == null
+                      ? const Text(
+                          "Your account is disabled",
                           style: TextStyle(color: Colors.red),
                         )
                       : const SizedBox(),
