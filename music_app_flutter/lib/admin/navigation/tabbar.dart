@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_app_flutter/admin/views/home.dart';
+import 'package:music_app_flutter/admin/views/song_management.dart';
 import 'package:music_app_flutter/admin/views/user_management.dart';
 
 class AdminTabbar extends StatefulWidget {
@@ -19,7 +20,7 @@ class _AdminTabbarState extends State<AdminTabbar> {
         children: [
           renderView(0, HomeView()),
           renderView(1, UserManagementView()),
-          // renderView(3, ProfileView()),
+          renderView(2, SongManagementView()),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -36,12 +37,12 @@ class _AdminTabbarState extends State<AdminTabbar> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.library_music),
-            label: "User Manage",
+            label: "User Manager",
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.person),
-          //   label: "Profile",
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "Song Manager",
+          ),
         ],
       ),
     );

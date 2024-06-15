@@ -57,6 +57,7 @@ class PlaylistUtils {
                     String image = song['image'] ?? '';
                     int views = song['views'] ?? 0;
                     String songUrl = song['audioUrl'] ?? '';
+                    int active = song['active'] ?? 0;
 
                     // Kiểm tra nếu songID là null thì không thực hiện tiếp
                     if (songID == null) {
@@ -72,6 +73,7 @@ class PlaylistUtils {
                       image: image,
                       views: views,
                       songUrl: songUrl,
+                      active: active,
                     );
                     addSongToPlaylist(playlistName, songObject.toJson());
                     Navigator.of(context).pop();

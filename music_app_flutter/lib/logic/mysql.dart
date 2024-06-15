@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:music_app_flutter/logic/models/songs.dart';
 import 'package:mysql1/mysql1.dart';
 
 class Mysql {
@@ -90,16 +91,84 @@ class Mysql {
         case 'top_charts':
           query = 'SELECT * FROM songs ORDER BY views desc LIMIT 10';
           break;
+        case 'all':
+        default:
+          query = 'SELECT * FROM songs';
       }
       var results = await conn.query(query);
       return results.map((row) {
         var fields = row.fields;
-        fields['audioUrl'] = fields['file'];
+        fields['songID'] = fields['id'];
+        fields['songUrl'] = fields['file'];
         return fields;
       }).toList();
     } catch (e) {
       print('Failed to get songs: $e');
       return [];
+    } finally {
+      await conn.close();
+    }
+  }
+
+  Future<void> addSong(Song song) async {
+    var conn = await getConnection();
+    try {
+      await conn.query(
+        'INSERT INTO songs (title, artist, image, views, file) VALUES (?, ?, ?, ?, ?)',
+        [song.title, song.artist, song.image, song.views, song.songUrl],
+      );
+    } catch (e) {
+      print('Failed to add song: $e');
+    } finally {
+      await conn.close();
+    }
+  }
+
+  Future<void> editSong(Song song) async {
+    var conn = await getConnection();
+    try {
+      await conn.query(
+        'UPDATE songs SET title = ?, artist = ?, image = ?, views = ?, file = ? WHERE id = ?',
+        [
+          song.title,
+          song.artist,
+          song.image,
+          song.views,
+          song.songUrl,
+          song.songID
+        ],
+      );
+    } catch (e) {
+      print('Failed to edit song: $e');
+    } finally {
+      await conn.close();
+    }
+  }
+
+  Future<void> deleteSong(int id) async {
+    var conn = await getConnection();
+    try {
+      await conn.query(
+        'DELETE FROM songs WHERE id = ?',
+        [id],
+      );
+    } catch (e) {
+      print('Failed to delete song: $e');
+    } finally {
+      await conn.close();
+    }
+  }
+
+  Future<void> toggleSongActive(int songID, int currentStatus) async {
+    var conn = await getConnection();
+    try {
+      int newStatus = currentStatus == 0 ? 1 : 0;
+      await conn.query(
+        'UPDATE songs SET active = ? WHERE id = ?',
+        [newStatus, songID],
+      );
+    } catch (e) {
+      print('Failed to toggle song active status: $e');
     } finally {
       await conn.close();
     }

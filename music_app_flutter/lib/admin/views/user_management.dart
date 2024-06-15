@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_app_flutter/admin/widgets/user_row_card.dart';
 import 'package:music_app_flutter/logic/models/users.dart';
 import 'package:music_app_flutter/logic/mysql.dart';
 
@@ -22,19 +23,18 @@ class _UserManagementViewState extends State<UserManagementView> {
   void _searchUsers(String keyword) async {
     var db = Mysql();
     var results = await db.searchUser(keyword);
-    print('Users from DB: $results'); // Debug
     List<User> users = results.map((row) => User.fromMap(row)).toList();
     setState(() {
       _users = users;
-      print('Updated _users: $_users'); // Debug
     });
   }
 
   void _toggleUserActivation(User user) async {
     var db = Mysql();
-    await db.updateUserActivation(user.id, !user.isActive); // Đảo ngược giá trị bool
+    await db.updateUserActivation(
+        user.id, !user.isActive); 
     setState(() {
-      user.isActive = !user.isActive; // Cập nhật trạng thái trong UI
+      user.isActive = !user.isActive; 
     });
   }
 
@@ -42,18 +42,30 @@ class _UserManagementViewState extends State<UserManagementView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("User Management"),
+        title: Text(
+          'Manage your users',
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Color.fromRGBO(0, 173, 181, 1.0),
+          ),
+        ),
+        backgroundColor: Color.fromRGBO(57, 62, 70, 1.0),
       ),
+      backgroundColor: Color.fromRGBO(57, 62, 70, 1.0),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
                 labelText: "Search",
                 prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
               ),
               onChanged: (query) {
                 _searchUsers(query);
@@ -61,46 +73,21 @@ class _UserManagementViewState extends State<UserManagementView> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: _users.length,
-              itemBuilder: (context, index) {
-                final user = _users[index];
-                return UserRowCard(
-                  user: user,
-                  onActivate: () => _toggleUserActivation(user),
-                );
-              },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 13),
+              child: ListView.builder(
+                itemCount: _users.length,
+                itemBuilder: (context, index) {
+                  final user = _users[index];
+                  return UserRowCard(
+                    user: user,
+                    onActivate: () => _toggleUserActivation(user),
+                  );
+                },
+              ),
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class UserRowCard extends StatelessWidget {
-  final User user;
-  final VoidCallback onActivate;
-
-  const UserRowCard({
-    required this.user,
-    required this.onActivate,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        leading: Icon(Icons.person),
-        title: Text(user.username),
-        subtitle: Text(user.email),
-        trailing: IconButton(
-          icon: Icon(
-            user.isActive ? Icons.check_circle : Icons.check_circle_outline,
-            color: user.isActive ? Colors.green : Colors.grey,
-          ),
-          onPressed: onActivate,
-        ),
       ),
     );
   }

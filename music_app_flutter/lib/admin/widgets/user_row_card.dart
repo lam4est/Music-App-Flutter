@@ -20,7 +20,9 @@ class UserRowCard extends StatelessWidget {
         trailing: IconButton(
           icon: Icon(
             user.isActive ? Icons.check_circle : Icons.check_circle_outline,
-            color: user.isActive ? Colors.green : Colors.grey,
+            color: user.isActive
+                ? Color.fromRGBO(0, 173, 181, 1.0)
+                : Color.fromRGBO(238, 238, 238, 1.0),
           ),
           onPressed: onActivate,
         ),
