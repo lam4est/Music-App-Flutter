@@ -4,14 +4,18 @@ import 'package:music_app_flutter/admin/views/song_management.dart';
 import 'package:music_app_flutter/admin/views/user_management.dart';
 
 class AdminTabbar extends StatefulWidget {
-  const AdminTabbar({super.key});
+  final int selectedIndex;
+
+  const AdminTabbar({Key? key, required this.selectedIndex}) : super(key: key);
 
   @override
-  State<AdminTabbar> createState() => _AdminTabbarState();
+  State<AdminTabbar> createState() => _AdminTabbarState(selectedIndex);
 }
 
 class _AdminTabbarState extends State<AdminTabbar> {
-  int _selectedTab = 0;
+  int _selectedTab;
+
+  _AdminTabbarState(this._selectedTab);
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +40,11 @@ class _AdminTabbarState extends State<AdminTabbar> {
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_music),
+            icon: Icon(Icons.people),
             label: "User Manager",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.music_note),
             label: "Song Manager",
           ),
         ],

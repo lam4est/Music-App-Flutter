@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:music_app_flutter/logic/models/songs.dart';
 import 'package:mysql1/mysql1.dart';
 
@@ -29,11 +27,11 @@ class Mysql {
         int active = row['active'];
         if (active == 1) {
           print('Tài khoản đã bị vô hiệu hóa.');
-          return null; // Trả về null nếu tài khoản đã bị vô hiệu hóa
+          return null; 
         }
 
         String role = row['role'];
-        print('Đăng nhập thành công với vai trò: $role');
+        print('Đăng nhập thành công với vai trò $role');
         return role;
       } else {
         print('Đăng nhập thất bại: Sai tên đăng nhập hoặc mật khẩu.');

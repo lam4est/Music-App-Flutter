@@ -75,6 +75,8 @@ class AdminApp extends StatefulWidget {
 }
 
 class _AdminAppState extends State<AdminApp> {
+  int _selectedTabIndex = 0; 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -99,7 +101,8 @@ class _AdminAppState extends State<AdminApp> {
         body: Stack(
           children: [
             Positioned.fill(
-              child: AdminTabbar(), // Main content of the app
+              child: AdminTabbar(
+                  selectedIndex: _selectedTabIndex), 
             ),
             Positioned(
               bottom: 56.0, // Height of the BottomNavigationBar
