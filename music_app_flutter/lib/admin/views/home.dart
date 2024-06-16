@@ -22,12 +22,12 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Future<void> fetchSongs() async {
-    var newSongsData = await mysql.getSongs('new_playlists');
+    var newSongsData = await mysql.getSongsbyAdmin('new_playlists');
     setState(() {
       newSongs = newSongsData;
     });
 
-    var topSongsData = await mysql.getSongs('top_charts');
+    var topSongsData = await mysql.getSongsbyAdmin('top_charts');
     setState(() {
       topSongs = topSongsData;
     });

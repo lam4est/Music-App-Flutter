@@ -22,7 +22,7 @@ class _SongManagementViewState extends State<SongManagementView> {
   }
 
   Future<void> fetchSongsFromDatabase() async {
-    var songData = await _db.getSongs('all');
+    var songData = await _db.getSongsbyAdmin('all');
     setState(() {
       songs = songData.map((data) => Song.fromMap(data)).toList();
       filteredSongs = songs;

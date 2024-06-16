@@ -27,7 +27,7 @@ class Mysql {
         int active = row['active'];
         if (active == 1) {
           print('Tài khoản đã bị vô hiệu hóa.');
-          return null; 
+          return null;
         }
 
         String role = row['role'];
@@ -70,6 +70,51 @@ class Mysql {
 
   // GET SONGS FROM DATABASE
   Future<List<Map<String, dynamic>>> getSongs(String type) async {
+    var conn = await getConnection();
+    try {
+      var query = '';
+      switch (type) {
+        case 'suggested':
+          query =
+              'SELECT * FROM songs WHERE active = 0 ORDER BY RAND() LIMIT 10';
+          break;
+        case 'new_playlists':
+          query =
+              'SELECT * FROM songs WHERE active = 0 ORDER BY date DESC LIMIT 10';
+          break;
+        case 'featured_albums':
+          query =
+              'SELECT * FROM songs WHERE active = 0 ORDER BY timestamp DESC LIMIT 10';
+          break;
+        case 'favorite_songs':
+          query =
+              'SELECT * FROM songs WHERE active = 0 ORDER BY RAND() LIMIT 10';
+          break;
+        case 'top_charts':
+          query =
+              'SELECT * FROM songs WHERE active = 0 ORDER BY views desc LIMIT 10';
+          break;
+        case 'all':
+        default:
+          query = 'SELECT * FROM songs';
+      }
+      var results = await conn.query(query);
+      return results.map((row) {
+        var fields = row.fields;
+        fields['songID'] = fields['id'];
+        fields['songUrl'] = fields['file'];
+        return fields;
+      }).toList();
+    } catch (e) {
+      print('Failed to get songs: $e');
+      return [];
+    } finally {
+      await conn.close();
+    }
+  }
+
+  // GET SONG FROM DATABASE BY ADMIN
+  Future<List<Map<String, dynamic>>> getSongsbyAdmin(String type) async {
     var conn = await getConnection();
     try {
       var query = '';
@@ -215,7 +260,7 @@ class Mysql {
     var conn = await getConnection();
     try {
       var results = await conn.query(
-        'SELECT * FROM songs WHERE title LIKE ?',
+        'SELECT * FROM songs WHERE title LIKE ? AND active = 0',
         ['%$keyword%'],
       );
       return results.map((row) => row.fields).toList();
